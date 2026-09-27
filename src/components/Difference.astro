@@ -1,0 +1,46 @@
+---
+import { site } from "../data/site";
+
+const software = ["Въвеждате всеки ред сами", "Абонамент, обучение, настройки", "Грешката е ваша отговорност", "Вечерите пак отиват за документи"];
+const us = ["Пращате файл — получавате готов документ", "Плащате само за свършена работа", "Проверяваме количества и цени вместо вас", "Вие сте на обекта, не пред компютъра"];
+---
+
+<section class="section surface-a" data-word="Разликата" aria-labelledby="diff-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>Защо нас, а не софтуер</p>
+    <h2 id="diff-title" class="h2 max-w-4xl" data-reveal style="--i:1">
+      Софтуерът ви дава празна таблица. <span class="dim">Ние ви даваме готов документ.</span>
+    </h2>
+
+    <div class="mt-14 grid gap-4 md:grid-cols-2">
+      <div class="vs-card border border-white/10" data-reveal data-spot>
+        <p class="text-sm font-medium text-muted">Софтуер за сметки</p>
+        <p class="mt-2 text-2xl font-semibold tracking-tight text-white/60">Работата е ваша.</p>
+        <ul class="mt-8">
+          {
+            software.map((t) => (
+              <li class="vs-item text-[#8a8a8a]">
+                <span aria-hidden="true" class="text-white/30">✕</span>
+                {t}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="vs-card bg-white text-black" data-reveal style="--i:1">
+        <p class="text-sm font-medium text-black/50">{site.name}</p>
+        <p class="mt-2 text-2xl font-semibold tracking-tight">Работата е наша.</p>
+        <ul class="mt-8">
+          {
+            us.map((t) => (
+              <li class="vs-item !border-black/10">
+                <i class="fa-solid fa-check mt-1 text-black" aria-hidden="true"></i>
+                {t}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

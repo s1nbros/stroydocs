@@ -1,0 +1,37 @@
+---
+/**
+ * Section break in the style of construction barrier tape.
+ * "cross": two crossed tapes, the front one carries a moving message.
+ * "stripe": a thin moving hazard stripe.
+ */
+interface Props {
+  variant?: "cross" | "stripe";
+  text?: string;
+}
+const { variant = "stripe", text = "" } = Astro.props;
+const items = Array.from({ length: 8 }, () => text);
+---
+
+{
+  variant === "cross" ? (
+    <div class="tape-cross" aria-hidden="true" data-reveal>
+      <div class="tape tape-back" />
+      <div class="tape tape-front">
+        <div class="tape-text">
+          {[0, 1].map(() => (
+            <span class="tape-set">
+              {items.map((t) => (
+                <span>
+                  {t}
+                  <i class="fa-solid fa-triangle-exclamation" />
+                </span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div class="tape-stripe" aria-hidden="true" />
+  )
+}

@@ -1,0 +1,106 @@
+---
+import { Image } from "astro:assets";
+import kssDesk from "../assets/kss-desk.jpg";
+import actsBinder from "../assets/acts-binder.jpg";
+
+/**
+ * Two rows of document mockups (and real photos) sliding in opposite directions.
+ * Every "document" is plain HTML so it stays crisp and light.
+ */
+type Doc = {
+  kind: "act" | "table" | "text" | "photo";
+  title?: string;
+  sub?: string;
+  photo?: ImageMetadata;
+  alt?: string;
+  stamp?: boolean;
+};
+
+const row1: Doc[] = [
+  { kind: "table", title: "КСС", sub: "Количествено-стойностна сметка · 180 позиции" },
+  { kind: "act", title: "Акт № 12", sub: "за установяване на СМР, подлежащи на закриване", stamp: true },
+  { kind: "photo", photo: kssDesk, alt: "Разпечатана количествено-стойностна сметка на бюро" },
+  { kind: "act", title: "Акт № 14", sub: "за приемане на конструкцията", stamp: true },
+  { kind: "text", title: "Техническо предложение", sub: "за участие в обществена поръчка" },
+  { kind: "act", title: "Протокол обр. 2", sub: "за откриване на строителна площадка" },
+];
+const row2: Doc[] = [
+  { kind: "table", title: "Акт № 19", sub: "за изпълнени и подлежащи на плащане СМР" },
+  { kind: "photo", photo: actsBinder, alt: "Папка с подредени актове 12, 14, 19 и 15" },
+  { kind: "act", title: "Акт № 15", sub: "за установяване годността за приемане на строежа", stamp: true },
+  { kind: "text", title: "Оферта", sub: "ценово предложение към инвеститор" },
+  { kind: "table", title: "Анализ на цени", sub: "единични цени по видове СМР" },
+  { kind: "act", title: "Заповедна книга", sub: "вписвания и предписания", stamp: false },
+];
+
+// Pseudo-random line widths so every looks a little different
+let seed = 11;
+const w = () => 45 + Math.round(((seed = (seed * 16807) % 2147483647) / 2147483647) * 50);
+import Tape from "./Tape.astro";
+---
+
+<Tape />
+<section class="section surface-b overflow-x-clip" data-word="Документи" aria-labelledby="gallery-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>Документите, които изготвяме</p>
+    <h2 id="gallery-title" class="h2 max-w-4xl" data-reveal style="--i:1">
+      Всяка хартия по обекта. <span class="dim">Подредена и готова за подпис.</span>
+    </h2>
+  </div>
+
+  <div class="doc-rows mt-16" data-reveal style="--i:2">
+    {
+      [row1, row2].map((row, r) => (
+        <div class:list={["doc-row-track", r === 1 && "reverse"]}>
+          {[0, 1].map((copy) => (
+            <div class="doc-row-set" aria-hidden={copy === 1 ? "true" : undefined}>
+              {row.map((d, i) =>
+                d.kind === "photo" ? (
+                  <figure class="doc-card doc-photo" style={`--tilt:${(i + r) % 2 ? 1.6 : -1.4}deg`}>
+                    <Image src={d.photo!} alt={copy === 1 ? "" : d.alt!} widths={[360, 720]} sizes="360px" loading="lazy" decoding="async" />
+                  </figure>
+                ) : (
+                  <article class="doc-card doc-paper" style={`--tilt:${(i + r) % 2 ? 1.6 : -1.4}deg`}>
+                    <header class="doc-card-head">
+                      <p class="doc-card-kicker">Stroydocs · обект 2026-{114 + i + r * 7}</p>
+                      <p class="doc-card-title">{d.title}</p>
+                      <p class="doc-card-sub">{d.sub}</p>
+                    </header>
+                    {d.kind === "table" ? (
+                      <div class="doc-card-table">
+                        {[0, 1, 2, 3, 4, 5].map(() => (
+                          <span>
+                            <i style={`width:${w()}%`} />
+                            <i />
+                            <i />
+                          </span>
+                        ))}
+                        <span class="total">
+                          <i style="width:40%" />
+                          <i />
+                          <b />
+                        </span>
+                      </div>
+                    ) : (
+                      <div class="doc-card-lines">
+                        {[0, 1, 2, 3, 4, 5, 6].map(() => (
+                          <i style={`width:${w()}%`} />
+                        ))}
+                      </div>
+                    )}
+                    <footer class="doc-card-foot">
+                      <svg viewBox="0 0 90 30" class="doc-sign" aria-hidden="true">
+                        <path d="M3 22c8-14 12-16 14-9s-3 12 3 6 8-15 11-10-2 12 4 9 6-10 10-8 1 8 6 6 8-7 12-6 6 3 10 1" />
+                      </svg>
+                      {d.stamp && <span class="doc-card-stamp">ОДОБРЕН</span>}
+                    </footer>
+                  </article>
+                ),
+              )}
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>

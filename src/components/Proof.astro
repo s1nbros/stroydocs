@@ -1,0 +1,154 @@
+---
+import { otherPrices, pricingExamples, pricingMin, pricingTiers } from "../data/site";
+import { Image } from "astro:assets";
+import actsBinder from "../assets/acts-binder.jpg";
+
+const caseStats = [
+  { value: 640, suffix: " м²", label: "РЗП на обекта" },
+  { value: 180, suffix: "", label: "Позиции в КСС" },
+  { value: 31, suffix: " ч", label: "До готова КСС" },
+];
+import Tape from "./Tape.astro";
+---
+
+<!-- Case study -->
+<Tape />
+<section class="section surface-a" data-word="Казус" aria-labelledby="case-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>Казус · кв. Малинова долина, София</p>
+    <h2 id="case-title" class="h2 max-w-4xl" data-reveal style="--i:1">
+      КСС готова за 31 часа. <span class="dim">Поръчката — спечелена.</span>
+    </h2>
+
+    <dl class="mt-14 grid grid-cols-3 border-y border-white/10">
+      {
+        caseStats.map((s, i) => (
+          <div class="py-8 pr-3 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-white/10 [&:not(:first-child)]:pl-4 sm:py-12 sm:[&:not(:first-child)]:pl-8" data-reveal style={`--i:${i}`}>
+            <dt class="sr-only">{s.label}</dt>
+            <dd class="font-display text-[clamp(30px,8vw,104px)] leading-none font-semibold whitespace-nowrap tabular-nums">
+              <span data-count={s.value} data-suffix={s.suffix} data-decimals="0" data-scroll-count>
+                {`${s.value}${s.suffix}`}
+              </span>
+            </dd>
+            <dd class="mt-3 text-sm text-muted sm:text-base">{s.label}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <figure class="mt-14 max-w-3xl" data-reveal>
+      <blockquote class="text-[clamp(22px,2.8vw,34px)] leading-snug font-medium tracking-[-0.02em]">
+        „Имахме два дни до срока за подаване. Пратих чертежите в петък вечер, в неделя сутрин КСС беше в пощата ми.
+        Спечелихме обекта.“
+      </blockquote>
+      <!-- TODO: replace with the real client name and company (with written permission) -->
+      <figcaption class="mt-6 text-muted">— [Име Фамилия], управител, [Строителна фирма]</figcaption>
+    </figure>
+
+    <div class="mt-16 grid items-center gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+      <div class="tilt" data-tilt data-reveal-photo>
+      <figure class="photo-card">
+        <Image src={actsBinder} alt="Папка с подредени актове 12, 14, 19 и 15, готови за подпис" widths={[480, 800, 1100]} sizes="(min-width: 1024px) 50vw, 100vw" loading="lazy" decoding="async" />
+        <figcaption>Папка „Акт 15“ — подредена и проверена</figcaption>
+      </figure>
+      </div>
+      <div data-reveal style="--i:1">
+      <p class="font-display text-[clamp(52px,7vw,88px)] leading-none">200+</p>
+      <p class="mt-5 max-w-xl text-lg leading-relaxed text-[#a8a8a8]">
+        изготвени акта и над 40 КСС за софийски изпълнители. Познаваме Наредба №3 и какво гледат техническият контрол и
+        инвеститорите — документите минават от първия път.
+      </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<Tape variant="cross" text="Ясни цени · Без скрити такси · Корекции безплатно" />
+<section class="section surface-b" data-word="Цени" id="pricing" aria-labelledby="pricing-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>Цени</p>
+    <h2 id="pricing-title" class="h2" data-reveal style="--i:1">
+      Цена на квадрат. <span class="dim">Колкото по-голям обектът — толкова по-ниска.</span>
+    </h2>
+    <p class="lead" data-reveal style="--i:2">
+      Скàлата е низходяща — при голям обект цената на квадрат пада, но общата сума расте значително.
+    </p>
+
+    <div class="mt-14 grid items-start gap-6 lg:grid-cols-[1.25fr_1fr]">
+      <!-- Base rates -->
+      <div class="price-table" data-reveal data-price-table role="table" aria-label="Базови ставки по РЗП">
+        <div class="price-head" role="row">
+          <span role="columnheader">Площ (РЗП)</span>
+          <span role="columnheader">КСС самостоятелно</span>
+          <span role="columnheader">Пълен документален пакет</span>
+        </div>
+        {
+          pricingTiers.map((t, i) => (
+            <div class="price-row" role="row" data-tier={i} data-spot style={`--i:${i}`}>
+              <span role="cell" class="price-area">{t.label}</span>
+              <span role="cell">
+                <b>{t.kss.toFixed(2).replace(".", ",")} €/м²</b>
+                {i === 0 && <small> (мин. {pricingMin.kss} €)</small>}
+                <i class="price-bar" style={`--w:${((t.kss / 5.0) * 100).toFixed(1)}%`} />
+              </span>
+              <span role="cell">
+                <b>{t.full.toFixed(2).replace(".", ",")} €/м²</b>
+                {i === 0 && <small> (мин. {pricingMin.full} €)</small>}
+                <i class="price-bar accent" style={`--w:${((t.full / 5.0) * 100).toFixed(1)}%`} />
+              </span>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Live calculator -->
+      <div class="calc" data-reveal style="--i:2" data-calc>
+        <p class="text-sm font-medium text-muted">Изчислете за вашия обект</p>
+        <label for="calc-area" class="mt-5 flex items-baseline justify-between gap-4">
+          <span class="text-[15px] font-medium">РЗП на обекта</span>
+          <output class="calc-area" for="calc-area" data-calc-area>640 м²</output>
+        </label>
+        <input id="calc-area" type="range" min="30" max="3000" step="10" value="640" class="calc-range" data-calc-input />
+        <div class="mt-5 flex flex-wrap gap-2" role="group" aria-label="Примери">
+          {
+            pricingExamples.map((e) => (
+              <button type="button" class="calc-chip" data-calc-set={e.area}>
+                {e.label} · {e.area} м²
+              </button>
+            ))
+          }
+        </div>
+        <dl class="mt-8 grid grid-cols-2 gap-3" aria-live="polite">
+          <div class="calc-out">
+            <dt>КСС</dt>
+            <dd data-calc-kss>1 024 €</dd>
+            <span data-calc-kss-rate>1,60 €/м²</span>
+          </div>
+          <div class="calc-out accent">
+            <dt>Пълен пакет</dt>
+            <dd data-calc-full>2 240 €</dd>
+            <span data-calc-full-rate>3,50 €/м²</span>
+          </div>
+        </dl>
+        <a href="#contact" class="btn-white mt-6 w-full">Поискай точна оферта <span class="btn-arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <h3 class="mt-20 text-sm font-medium text-muted" data-reveal>Други услуги</h3>
+    <div class="mt-4 border-t border-white/10">
+      {
+        otherPrices.map((p, i) => (
+          <div class="price-other flex flex-col gap-1 border-b border-white/10 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8" data-reveal data-spot style={`--i:${i}`}>
+            <div>
+              <p class="text-[clamp(18px,1.8vw,21px)] font-semibold tracking-[-0.02em]">{p.item}</p>
+              <p class="mt-1 text-[15px] text-muted">{p.note}</p>
+            </div>
+            <p class="shrink-0 font-display text-[clamp(22px,2.4vw,28px)] font-semibold">{p.price}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="mt-6 text-[15px] text-muted" data-reveal>Цените са без ДДС. Корекциите по същия обект са безплатни.</p>
+  </div>
+</section>

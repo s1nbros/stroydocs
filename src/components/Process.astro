@@ -1,0 +1,150 @@
+---
+import { steps } from "../data/site";
+
+// Sample estimate shown in the mockup (anonymised figures)
+const rows = [
+  { no: 1, work: "Кофраж на плочи и стени", unit: "м²", qty: 1240, price: 16.6 },
+  { no: 2, work: "Армировка B500B", unit: "кг", qty: 38500, price: 1.45 },
+  { no: 3, work: "Бетон C25/30, с помпа", unit: "м³", qty: 412, price: 142 },
+  { no: 4, work: "Зидария, блокове 25 см", unit: "м²", qty: 960, price: 38.5 },
+  { no: 5, work: "Хидроизолация на основи", unit: "м²", qty: 640, price: 22 },
+  { no: 6, work: "Вътрешна мазилка", unit: "м²", qty: 2150, price: 14.8 },
+];
+const fmt = (n: number) => n.toLocaleString("bg-BG", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const subtotal = rows.reduce((s, r) => s + r.qty * r.price, 0);
+const vat = subtotal * 0.2;
+const total = subtotal + vat;
+import Tape from "./Tape.astro";
+---
+
+<!-- How it works: pinned while the three steps slide horizontally (desktop) -->
+<Tape variant="cross" text="Изпратете файл · Оферта до 2 часа · Готово до 48 часа" />
+<section class="steps-pin surface-b" data-pin aria-labelledby="process-title">
+  <div class="pin-sticky" data-word="Процес">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Как работи</p>
+      <h2 id="process-title" class="h2" data-reveal style="--i:1">
+        Три стъпки. <span class="dim">Без срещи.</span>
+      </h2>
+    </div>
+
+    <ol class="pin-track" data-pin-track>
+      <li class="step-panel">
+        <div class="step-visual step-files" aria-hidden="true">
+          <span class="file-chip"><i class="fa-solid fa-file-excel"></i> КСС_обект.xlsx</span>
+          <span class="file-chip"><i class="fa-solid fa-file-pdf"></i> чертежи_А1.pdf</span>
+          <span class="file-chip"><i class="fa-solid fa-image"></i> снимка_обект.jpg</span>
+          <span class="file-drop-zone"><i class="fa-solid fa-arrow-up-from-bracket"></i></span>
+        </div>
+        <h3 class="step-title">{steps[0].title}</h3>
+        <p class="step-text">{steps[0].text}</p>
+      </li>
+      <li class="step-panel">
+        <div class="step-visual step-quote" aria-hidden="true">
+          <p class="quote-row"><span>Обект</span><b>Жилищна сграда, 640 м²</b></p>
+          <p class="quote-row"><span>КСС</span><b>1 024 €</b></p>
+          <p class="quote-row"><span>Срок</span><b>48 часа</b></p>
+          <p class="quote-time"><i class="fa-regular fa-clock"></i> изпратена след 1 ч 12 мин</p>
+        </div>
+        <h3 class="step-title">{steps[1].title}</h3>
+        <p class="step-text">{steps[1].text}</p>
+      </li>
+      <li class="step-panel">
+        <div class="step-visual step-done" aria-hidden="true">
+          <div class="done-sheet">
+            <p class="doc-card-kicker">Stroydocs</p>
+            <p class="svc-doc-title">КСС — финал</p>
+            <div class="doc-card-lines"><i style="width:90%"></i><i style="width:74%"></i><i style="width:84%"></i><i style="width:60%"></i></div>
+            <span class="svc-doc-stamp">ГОТОВО</span>
+          </div>
+        </div>
+        <h3 class="step-title">{steps[2].title}</h3>
+        <p class="step-text">{steps[2].text}</p>
+      </li>
+    </ol>
+
+    <div class="wrap">
+      <div class="pin-progress" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- What you get back: animated document mockup -->
+<section class="section surface-a overflow-x-clip" data-word="Резултат" aria-labelledby="doc-title">
+  <div class="wrap grid items-center gap-14 lg:grid-cols-[0.8fr_1.2fr]">
+    <div>
+      <p class="eyebrow" data-reveal>Какво получавате</p>
+      <h2 id="doc-title" class="h2" data-reveal style="--i:1">
+        Документ, който <span class="dim">подавате още днес.</span>
+      </h2>
+      <ul class="mt-10 grid gap-4 text-[17px] text-[#cfcfcf]">
+        {
+          ["Excel с формули — редактирате го по всяко време", "PDF, готов за инвеститора или търга", "Разбивка по видове СМР", "Количества, проверени спрямо чертежите"].map(
+            (t, i) => (
+              <li class="flex gap-3" data-reveal style={`--i:${i + 2}`}>
+                <i class="fa-solid fa-check mt-1 text-white" aria-hidden="true" />
+                {t}
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </div>
+
+    <div class="doc-stage min-w-0" data-doc data-tilt>
+      <div class="doc-back" aria-hidden="true"></div>
+      <figure class="doc-sheet p-5 sm:p-8" aria-label="Примерна количествено-стойностна сметка">
+        <div class="flex items-start justify-between gap-4 border-b-2 border-black pb-4">
+          <div>
+            <p class="text-[10px] font-semibold tracking-[0.18em] text-black/50 uppercase">Количествено-стойностна сметка</p>
+            <p class="mt-1 text-base font-semibold sm:text-lg">
+              Жилищна сграда, кв. Малинова долина<span class="doc-cursor" aria-hidden="true"></span>
+            </p>
+          </div>
+          <p class="shrink-0 text-right text-[10px] text-black/50">
+            № 2026-114<br />София
+          </p>
+        </div>
+        <div class="-mx-2 overflow-x-auto">
+          <table class="mt-2 w-full border-collapse text-left text-[11px] sm:text-[12px]">
+            <thead class="text-[10px] tracking-wider text-black/45 uppercase">
+              <tr>
+                <th class="hidden px-2.5 py-2 font-semibold sm:table-cell">№</th>
+                <th class="px-2.5 py-2 font-semibold">Вид СМР</th>
+                <th class="px-2.5 py-2 font-semibold">Мярка</th>
+                <th class="px-2.5 py-2 text-right font-semibold">К-во</th>
+                <th class="hidden px-2.5 py-2 text-right font-semibold sm:table-cell">Ед. цена €</th>
+                <th class="px-2.5 py-2 text-right font-semibold">Стойност €</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                rows.map((r, i) => (
+                  <tr class="doc-row" style={`--r:${i}`}>
+                    <td class="hidden text-black/40 sm:table-cell">{r.no}</td>
+                    <td class="font-medium">{r.work}</td>
+                    <td>{r.unit}</td>
+                    <td class="amt text-right">{r.qty.toLocaleString("bg-BG")}</td>
+                    <td class="amt hidden text-right sm:table-cell">{fmt(r.price)}</td>
+                    <td class="amt text-right font-semibold">{fmt(r.qty * r.price)}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <dl class="mt-4 ml-auto grid max-w-[260px] grid-cols-2 gap-y-1.5 text-right text-[12px]">
+          <dt class="text-black/50">Общо</dt>
+          <dd class="amt font-medium" data-doc-count={subtotal.toFixed(2)}>{fmt(subtotal)}</dd>
+          <dt class="text-black/50">ДДС 20%</dt>
+          <dd class="amt font-medium" data-doc-count={vat.toFixed(2)}>{fmt(vat)}</dd>
+          <dt class="pt-2 font-semibold">Всичко €</dt>
+          <dd class="pt-2 text-[15px] font-bold">
+            <span class="doc-highlight px-1" data-doc-count={total.toFixed(2)}>{fmt(total)}</span>
+          </dd>
+        </dl>
+        <div class="doc-stamp" aria-hidden="true">ГОТОВО<br />ЗА 31 Ч</div>
+      </figure>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,104 @@
+---
+import "../styles/global.css";
+import { site } from "../data/site";
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og-image.jpg", Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${Astro.site}#business`,
+  name: site.name,
+  description: site.description,
+  url: Astro.site?.toString(),
+  image: ogImage.toString(),
+  logo: new URL("/assets/logo.svg", Astro.site).toString(),
+  telephone: site.phoneE164,
+  email: site.email,
+  priceRange: "€€",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "София",
+    addressCountry: "BG",
+  },
+  areaServed: [
+    { "@type": "City", name: "София" },
+    { "@type": "Country", name: "България" },
+  ],
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "08:00",
+    closes: "18:00",
+  },
+  makesOffer: [
+    "Изготвяне на КСС",
+    "Актове по Наредба №3",
+    "Документален офис (месечен абонамент)",
+    "Документи за обществени поръчки",
+  ].map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
+};
+---
+
+<!doctype html>
+<html lang="bg">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{site.title}</title>
+    <meta name="description" content={site.description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#000000" />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      // Play the entrance animation once per session, and never for reduced-motion users
+      try {
+        if (!sessionStorage.getItem("sd-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          document.documentElement.classList.add("play-intro");
+          sessionStorage.setItem("sd-intro", "1");
+        }
+      } catch (e) {}
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="bg_BG" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={site.title} />
+    <meta property="og:description" content={site.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="896" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fonts: Inter (UI), Oswald (condensed display, signage feel), IBM Plex Mono (technical labels) — all with Cyrillic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome is only used for a few icons, so load it without blocking render -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      media="print"
+      onload="this.media='all'"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Към съдържанието</a>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <slot />
+    <script>
+      import "../scripts/main.ts";
+    </script>
+  </body>
+</html>

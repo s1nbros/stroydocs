@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://stroydocs.bg/sitemap-index.xml

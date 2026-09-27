@@ -1,0 +1,25 @@
+---
+/**
+ * Oversized outlined words that slide sideways as the page scrolls (main.ts sets --shift).
+ * Works as a visual break between sections.
+ */
+interface Props {
+  words: string[];
+  reverse?: boolean;
+}
+const { words, reverse = false } = Astro.props;
+const line = [...words, ...words, ...words];
+---
+
+<div class:list={["big-marquee", reverse && "reverse"]} data-marquee aria-hidden="true">
+  <div class="big-marquee-track">
+    {
+      line.map((w, i) => (
+        <span class:list={["big-word", i % 2 === 1 && "solid"]}>
+          {w}
+          <i class="fa-solid fa-asterisk" />
+        </span>
+      ))
+    }
+  </div>
+</div>

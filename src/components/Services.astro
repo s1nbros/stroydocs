@@ -1,0 +1,78 @@
+---
+import { services } from "../data/site";
+import BigMarquee from "./BigMarquee.astro";
+
+const pains = ["Три дни в Excel за една КСС.", "Акт 19 в неделя вечер.", "Липсващ документ седмица преди Акт 15."];
+import Tape from "./Tape.astro";
+---
+
+<BigMarquee words={["КСС", "Актове", "Оферти", "Търгове", "Документален офис"]} />
+
+<!-- The problem -->
+<section class="section surface-a" data-word="Проблемът" aria-labelledby="pain-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>Познато ли ви е?</p>
+    <h2 id="pain-title" class="sr-only">Проблемът</h2>
+    <div class="mt-10 grid gap-5">
+      {
+        pains.map((p, i) => (
+          <p data-reveal style={`--i:${i}`} class="text-[clamp(30px,5vw,60px)] leading-[1.08] font-semibold tracking-[-0.04em] text-[#9a9a9a]">
+            <span class="strike">{p}</span>
+          </p>
+        ))
+      }
+    </div>
+    <p data-reveal style="--i:3" class="lead">
+      Това го задраскваме ние. <strong class="font-semibold text-white">Вие оставате на обекта.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- Services -->
+<Tape />
+<section class="section surface-b" data-word="Услуги" id="services" aria-labelledby="services-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>Какво правим</p>
+    <h2 id="services-title" class="h2" data-reveal style="--i:1">
+      Четири услуги. <span class="dim">Една цел — да не губите време.</span>
+    </h2>
+
+    <div class="relative mt-14 border-t border-white/10" data-svc-list>
+      <!-- Floating document preview that follows the cursor over the rows (desktop only) -->
+      <div class="svc-preview" aria-hidden="true">
+        {
+          services.map((s, i) => (
+            <div class="svc-doc" data-svc-doc={i}>
+              <p class="doc-card-kicker">Stroydocs</p>
+              <p class="svc-doc-title">{s.preview}</p>
+              <div class="doc-card-lines">
+                <i style="width:90%" />
+                <i style="width:70%" />
+                <i style="width:82%" />
+                <i style="width:55%" />
+                <i style="width:76%" />
+              </div>
+              <span class="svc-doc-stamp">ГОТОВО</span>
+            </div>
+          ))
+        }
+      </div>
+      {
+        services.map((s, i) => (
+          <a href="#contact" class="service-row group" data-reveal data-spot data-svc={i} style={`--i:${i}`}>
+            <span class="service-icon" aria-hidden="true"><i class={s.icon} /></span>
+            <span>
+              <span class="block text-[clamp(24px,2.6vw,32px)] font-semibold tracking-[-0.03em]">{s.title}</span>
+              <span class="mt-1 block text-sm text-muted">{s.tag}</span>
+            </span>
+            <span class="col-span-2 text-[17px] leading-relaxed text-[#a8a8a8] min-[900px]:col-span-1">{s.text}</span>
+            <span class="col-span-2 flex items-center gap-3 text-[19px] font-semibold whitespace-nowrap min-[900px]:col-span-1 min-[900px]:justify-end">
+              {s.price}
+              <span class="btn-arrow text-white/50" aria-hidden="true">→</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
