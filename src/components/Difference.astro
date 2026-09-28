@@ -3,23 +3,23 @@ import { site } from "../data/site";
 
 const software = ["Въвеждате всеки ред сами", "Абонамент, обучение, настройки", "Грешката е ваша отговорност", "Вечерите пак отиват за документи"];
 const us = ["Пращате файл — получавате готов документ", "Плащате само за свършена работа", "Проверяваме количества и цени вместо вас", "Вие сте на обекта, не пред компютъра"];
+import Heading from "./Heading.astro";
+import { FlippingWordSwap } from "@/components/ui/flipping-word-swap";
 ---
 
 <section class="section surface-a" data-word="Разликата" aria-labelledby="diff-title">
   <div class="wrap">
     <p class="eyebrow" data-reveal>Защо нас, а не софтуер</p>
-    <h2 id="diff-title" class="h2 max-w-4xl" data-reveal style="--i:1">
-      Софтуерът ви дава празна таблица. <span class="dim">Ние ви даваме готов документ.</span>
-    </h2>
+    <Heading id="diff-title" class="max-w-4xl" text="Софтуерът ви дава празна таблица." dim="Ние ви даваме готов документ." />
 
     <div class="mt-14 grid gap-4 md:grid-cols-2">
       <div class="vs-card border border-white/10" data-reveal data-spot>
         <p class="text-sm font-medium text-muted">Софтуер за сметки</p>
-        <p class="mt-2 text-2xl font-semibold tracking-tight text-white/60">Работата е ваша.</p>
+        <p class="mt-2 text-2xl font-semibold tracking-tight text-white/60"><FlippingWordSwap client:visible word1="Работата е ваша." word2="И грешките — също." className="flip-left" /></p>
         <ul class="mt-8">
           {
             software.map((t) => (
-              <li class="vs-item text-[#8a8a8a]">
+              <li class="vs-item text-[#8793a5]">
                 <span aria-hidden="true" class="text-white/30">✕</span>
                 {t}
               </li>
@@ -29,7 +29,7 @@ const us = ["Пращате файл — получавате готов док�
       </div>
       <div class="vs-card bg-white text-black" data-reveal style="--i:1">
         <p class="text-sm font-medium text-black/50">{site.name}</p>
-        <p class="mt-2 text-2xl font-semibold tracking-tight">Работата е наша.</p>
+        <p class="mt-2 text-2xl font-semibold tracking-tight"><FlippingWordSwap client:visible word1="Работата е наша." word2="Вие сте на обекта." toClassName="text-[#c8963e]" className="flip-left" /></p>
         <ul class="mt-8">
           {
             us.map((t) => (

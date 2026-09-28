@@ -15,6 +15,7 @@ const subtotal = rows.reduce((s, r) => s + r.qty * r.price, 0);
 const vat = subtotal * 0.2;
 const total = subtotal + vat;
 import Tape from "./Tape.astro";
+import Heading from "./Heading.astro";
 ---
 
 <!-- How it works: pinned while the three steps slide horizontally (desktop) -->
@@ -23,9 +24,7 @@ import Tape from "./Tape.astro";
   <div class="pin-sticky" data-word="Процес">
     <div class="wrap">
       <p class="eyebrow" data-reveal>Как работи</p>
-      <h2 id="process-title" class="h2" data-reveal style="--i:1">
-        Три стъпки. <span class="dim">Без срещи.</span>
-      </h2>
+      <Heading id="process-title" text="Три стъпки." dim="Без срещи." />
     </div>
 
     <ol class="pin-track" data-pin-track>
@@ -74,10 +73,8 @@ import Tape from "./Tape.astro";
   <div class="wrap grid items-center gap-14 lg:grid-cols-[0.8fr_1.2fr]">
     <div>
       <p class="eyebrow" data-reveal>Какво получавате</p>
-      <h2 id="doc-title" class="h2" data-reveal style="--i:1">
-        Документ, който <span class="dim">подавате още днес.</span>
-      </h2>
-      <ul class="mt-10 grid gap-4 text-[17px] text-[#cfcfcf]">
+      <Heading id="doc-title" text="Документ, който" dim="подавате още днес." />
+      <ul class="mt-10 grid gap-4 text-[17px] text-[#ccd4df]">
         {
           ["Excel с формули — редактирате го по всяко време", "PDF, готов за инвеститора или търга", "Разбивка по видове СМР", "Количества, проверени спрямо чертежите"].map(
             (t, i) => (

@@ -1,6 +1,9 @@
 ---
 import { heroStats, nav, site } from "../data/site";
 import ConstructionScene from "./ConstructionScene.astro";
+import { TextMorph } from "@/components/ui/text-morph";
+import { AnnotatedText } from "@/components/ui/annotated-text";
+import { LetterCascade } from "@/components/ui/letter-cascade";
 ---
 
 <!-- Entrance: shown once per session (html.play-intro is set by the inline script in Layout) -->
@@ -14,19 +17,32 @@ import ConstructionScene from "./ConstructionScene.astro";
 </div>
 
 <header class="header" id="site-header">
-  <a href="#top" class="logo" aria-label={`${site.name} — начало`}>
-    <img src="/assets/logo.svg" alt="" width="52" height="52" />
-  </a>
+  <div class="header-bar">
+    <a href="#top" class="brand" aria-label={`${site.name} — начало`}>
+      <span class="logo"><img src="/assets/logo.svg" alt="" width="52" height="52" /></span>
+      <span class="brand-text">
+        <b>{site.name}</b>
+        <small>КСС · Актове · Оферти</small>
+      </span>
+    </a>
 
-  <nav class="nav" aria-label="Основна навигация">
-    {nav.map((n, i) => <a href={n.href} class:list={[i === 0 && "is-active"]} data-spy={n.href}>{n.label}</a>)}
-  </nav>
+    <nav class="nav" aria-label="Основна навигация" data-nav>
+      <span class="nav-indicator" aria-hidden="true"></span>
+      {nav.map((n, i) => <a href={n.href} class:list={[i === 0 && "is-active"]} data-spy={n.href}>{n.label}</a>)}
+    </nav>
 
-  <a href={site.phoneHref} class="sign-in">Обади се</a>
+    <a href={site.phoneHref} class="nav-phone" aria-label={`Обадете се на ${site.phoneDisplay}`}>
+      <span class="nav-phone-icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
+      <span class="nav-phone-text">
+        <small>Обадете се</small>
+        <b>{site.phoneDisplay}</b>
+      </span>
+    </a>
 
-  <button class="burger" type="button" aria-label="Отвори менюто" aria-expanded="false" aria-controls="mobile-menu">
-    <span></span><span></span><span></span>
-  </button>
+    <button class="burger" type="button" aria-label="Отвори менюто" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
 
 <!-- Kept outside the header: the header is transformed, which would trap fixed children -->
@@ -61,17 +77,17 @@ import ConstructionScene from "./ConstructionScene.astro";
         <span class="trust-pill">Над 200 акта за софийски фирми</span>
       </div>
 
-      <h1 class="headline anim" id="hero-title">
-        <span>КСС и актове</span>
-        <span>до <em>48</em> часа</span>
+      <h1 class="headline" id="hero-title">
+        <span class="hl-line"><span class="hl-morph"><TextMorph client:load words={["КСС", "Актове", "Оферти", "Търгове"]} interval={2200} morphDuration={720} /></span></span>
+        <span class="hl-line"><span class="hl-split">до <em>48</em> часа</span></span>
       </h1>
 
       <p class="subhead anim" style="--d: 0.28s">
-        Вие строите. Ние правим документите. Изпратете количествена сметка или чертеж — оферта до 2 часа, готов документ
-        до 48.
+        Вие строите. Ние правим документите. Изпратете количествена сметка или чертеж —{" "}
+        <span class="whitespace-nowrap"><AnnotatedText client:visible variant="wavy" color="text-[#c8963e]" delay={2.4}>оферта до 2 часа</AnnotatedText>,</span> готов документ до 48.
       </p>
 
-      <a href="#contact" class="cta anim" style="--d: 0.4s">Изпрати файл <span class="btn-arrow" aria-hidden="true">→</span></a>
+      <a href="#contact" class="cta anim" style="--d: 0.4s"><LetterCascade client:visible text="Изпрати файл" /> <span class="btn-arrow" aria-hidden="true">→</span></a>
     </div>
 
     <ul class="stats" aria-label="Ключови цифри">

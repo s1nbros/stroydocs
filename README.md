@@ -26,12 +26,16 @@ Astro + Tailwind CSS, static output, deployed to Vercel.
 - `src/components/BigMarquee.astro` — oversized outlined words that move with the scroll
 - `src/components/Process.astro` — pinned horizontal "how it works" (desktop) + animated КСС mockup
 - `src/components/DocGallery.astro` — sliding rows of document mockups and photos
-- `src/scripts/main.ts` — menu, count-ups, reveals, scroll-spy, forms, pricing calculator, scroll/pointer effects
+- `src/scripts/main.ts` — menu, scroll-spy, forms, pricing calculator, cursor spotlight
+- `src/scripts/motion.ts` — all animation with GSAP (ScrollTrigger, SplitText, ScrambleText): hero timeline, reveals, pinned steps, marquees, counters, magnetic buttons, tilt
+- `src/components/ui/` — text animations from [Componentry](https://componentry.dev) (MIT): TextMorph, KineticTextReveal, AnnotatedText, FlippingWordSwap, LetterCascade — React islands
+- `src/components/Heading.astro` — section heading built on KineticTextReveal
 - `src/styles/global.css` — design tokens and all animations
 
 ## Fonts
 
-Inter (UI), Oswald (display headings and numbers), IBM Plex Mono (technical labels) — all from Google Fonts, all with Cyrillic.
+Source Serif 4 (headings and numbers), IBM Plex Sans (UI), IBM Plex Mono (technical labels) — all from Google Fonts, all with Cyrillic.
+The Bulgarian `locl` letterforms are switched off in `global.css` so the Cyrillic uses the neutral shapes.
 
 ## Photos
 

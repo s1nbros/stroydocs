@@ -2,6 +2,9 @@
 import { FORMSPREE_ENDPOINT, faq, projectTypes, site } from "../data/site";
 import BigMarquee from "./BigMarquee.astro";
 import Tape from "./Tape.astro";
+import Heading from "./Heading.astro";
+import { AnnotatedText } from "@/components/ui/annotated-text";
+import { LetterCascade } from "@/components/ui/letter-cascade";
 ---
 
 <!-- Free checklist -->
@@ -14,7 +17,7 @@ import Tape from "./Tape.astro";
         <h2 id="checklist-title" class="mt-3 text-[clamp(30px,3.6vw,44px)] leading-[1.05] font-semibold tracking-[-0.04em]">
           Чеклист: всички документи за папка Акт 15
         </h2>
-        <p class="mt-4 text-lg text-[#a8a8a8]">Една страница. Отметнете и вижте какво липсва — преди да дойде комисията.</p>
+        <p class="mt-4 text-lg text-[#a9b3c2]">Една страница. Отметнете и вижте какво липсва — преди да дойде комисията.</p>
       </div>
       <form class="relative flex flex-col gap-3 sm:flex-row" data-form action={FORMSPREE_ENDPOINT} method="POST">
         <input type="hidden" name="_subject" value="Заявка за чеклист Акт 15" />
@@ -41,7 +44,7 @@ import Tape from "./Tape.astro";
   <div class="wrap grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
     <div>
       <p class="eyebrow" data-reveal>Въпроси</p>
-      <h2 id="faq-title" class="h2" data-reveal style="--i:1">Често <span class="dim">питат.</span></h2>
+      <Heading id="faq-title" text="Често" dim="питат." />
     </div>
     <div class="faq border-t border-white/10" data-reveal style="--i:2">
       {
@@ -66,10 +69,8 @@ import Tape from "./Tape.astro";
   <div class="wrap grid items-start gap-14 lg:grid-cols-2">
     <div>
       <p class="eyebrow" data-reveal>Запитване</p>
-      <h2 id="contact-title" class="h2" data-reveal style="--i:1">
-        Изпратете файла. <span class="dim">Цената е до 2 часа.</span>
-      </h2>
-      <p class="lead" data-reveal style="--i:2">Четири полета. Без регистрация. Или просто се обадете или пишете във Viber.</p>
+      <Heading id="contact-title" text="Изпратете файла." dim="Цената е до 2 часа." />
+      <p class="lead" data-reveal style="--i:2"><AnnotatedText client:visible variant="box" color="text-[#c8963e]" delay={0.8}>Четири полета.</AnnotatedText> Без регистрация. Или просто се обадете или пишете във Viber.</p>
       <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap" data-reveal style="--i:3">
         <a href={site.phoneHref} class="btn-white text-[17px]">
           <i class="fa-solid fa-phone" aria-hidden="true"></i>
@@ -88,7 +89,7 @@ import Tape from "./Tape.astro";
     </div>
 
     <form
-      class="grid gap-5 rounded-[28px] border border-white/10 bg-[#0b0b0c] p-6 sm:p-10"
+      class="grid gap-5 rounded-[28px] border border-white/10 bg-[#0d1522] p-6 sm:p-10"
       data-form
       data-reveal
       style="--i:2"
@@ -121,7 +122,7 @@ import Tape from "./Tape.astro";
         </label>
       </div>
       <button type="submit" class="btn-white mt-2 w-full !min-h-[58px] text-[17px]">
-        Изпрати запитване <span class="btn-arrow" aria-hidden="true">→</span>
+        <LetterCascade client:visible text="Изпрати запитване" /> <span class="btn-arrow" aria-hidden="true">→</span>
       </button>
       <p class="form-status text-center text-sm" role="status" aria-live="polite"></p>
       <p class="flex items-center justify-center gap-2 text-sm text-muted">
@@ -131,7 +132,7 @@ import Tape from "./Tape.astro";
   </div>
 </section>
 
-<footer class="relative z-[2] border-t border-white/10 bg-black">
+<footer class="relative z-[2] border-t border-white/10 bg-[#0a111c]">
   <div class="wrap flex flex-col gap-8 py-12 sm:flex-row sm:items-center sm:justify-between">
     <a href="#top" class="flex items-center gap-3 text-lg font-semibold tracking-tight">
       <span class="grid h-10 w-10 place-items-center rounded-full bg-white"><img src="/assets/logo.svg" alt="" width="28" height="28" /></span>

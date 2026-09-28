@@ -1,0 +1,20 @@
+---
+/**
+ * Section heading: the main phrase and the dimmed phrase each reveal word by word
+ * with Componentry's KineticTextReveal (blur + rise), hydrated when scrolled into view.
+ */
+import { KineticTextReveal } from "@/components/ui/kinetic-text-reveal";
+
+interface Props {
+  text: string;
+  dim?: string;
+  id?: string;
+  class?: string;
+}
+const { text, dim, id, class: className = "" } = Astro.props;
+---
+
+<h2 id={id} class:list={["h2", className]}>
+  <KineticTextReveal client:visible text={text} splitBy="words" distance={28} stagger={0.06} />{" "}
+  {dim && <KineticTextReveal client:visible text={dim} splitBy="words" distance={28} stagger={0.06} delay={0.25} className="dim" />}
+</h2>

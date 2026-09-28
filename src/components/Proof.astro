@@ -9,6 +9,9 @@ const caseStats = [
   { value: 31, suffix: " ч", label: "До готова КСС" },
 ];
 import Tape from "./Tape.astro";
+import Heading from "./Heading.astro";
+import { AnnotatedText } from "@/components/ui/annotated-text";
+import { LetterCascade } from "@/components/ui/letter-cascade";
 ---
 
 <!-- Case study -->
@@ -16,9 +19,7 @@ import Tape from "./Tape.astro";
 <section class="section surface-a" data-word="Казус" aria-labelledby="case-title">
   <div class="wrap">
     <p class="eyebrow" data-reveal>Казус · кв. Малинова долина, София</p>
-    <h2 id="case-title" class="h2 max-w-4xl" data-reveal style="--i:1">
-      КСС готова за 31 часа. <span class="dim">Поръчката — спечелена.</span>
-    </h2>
+    <Heading id="case-title" class="max-w-4xl" text="КСС готова за 31 часа." dim="Поръчката — спечелена." />
 
     <dl class="mt-14 grid grid-cols-3 border-y border-white/10">
       {
@@ -54,9 +55,9 @@ import Tape from "./Tape.astro";
       </div>
       <div data-reveal style="--i:1">
       <p class="font-display text-[clamp(52px,7vw,88px)] leading-none">200+</p>
-      <p class="mt-5 max-w-xl text-lg leading-relaxed text-[#a8a8a8]">
+      <p class="mt-5 max-w-xl text-lg leading-relaxed text-[#a9b3c2]">
         изготвени акта и над 40 КСС за софийски изпълнители. Познаваме Наредба №3 и какво гледат техническият контрол и
-        инвеститорите — документите минават от първия път.
+        инвеститорите — документите минават <AnnotatedText client:visible variant="highlight" color="text-[#c8963e]/35" delay={0.5}>от първия път</AnnotatedText>.
       </p>
       </div>
     </div>
@@ -68,11 +69,9 @@ import Tape from "./Tape.astro";
 <section class="section surface-b" data-word="Цени" id="pricing" aria-labelledby="pricing-title">
   <div class="wrap">
     <p class="eyebrow" data-reveal>Цени</p>
-    <h2 id="pricing-title" class="h2" data-reveal style="--i:1">
-      Цена на квадрат. <span class="dim">Колкото по-голям обектът — толкова по-ниска.</span>
-    </h2>
+    <Heading id="pricing-title" text="Цена на квадрат." dim="Колкото по-голям обектът — толкова по-ниска." />
     <p class="lead" data-reveal style="--i:2">
-      Скàлата е низходяща — при голям обект цената на квадрат пада, но общата сума расте значително.
+      Скàлата е <AnnotatedText client:visible variant="circle" color="text-[#c8963e]" delay={0.6}>низходяща</AnnotatedText> — при голям обект цената на квадрат пада, но общата сума расте значително.
     </p>
 
     <div class="mt-14 grid items-start gap-6 lg:grid-cols-[1.25fr_1fr]">
@@ -131,7 +130,7 @@ import Tape from "./Tape.astro";
             <span data-calc-full-rate>3,50 €/м²</span>
           </div>
         </dl>
-        <a href="#contact" class="btn-white mt-6 w-full">Поискай точна оферта <span class="btn-arrow" aria-hidden="true">→</span></a>
+        <a href="#contact" class="btn-white mt-6 w-full"><LetterCascade client:visible text="Поискай точна оферта" /> <span class="btn-arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
 
