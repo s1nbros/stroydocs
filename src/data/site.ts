@@ -4,6 +4,7 @@ export const site = {
   phoneDisplay: "0884 782 777",
   phoneE164: "+359884782777",
   phoneHref: "tel:+359884782777",
+  // Opens a Viber chat with the number (international format, "+" encoded as %2B)
   viberHref: "viber://chat?number=%2B359884782777",
   whatsappHref: "https://wa.me/359884782777",
   // TODO: replace with the real mailbox
@@ -77,17 +78,26 @@ export const steps = [
 ];
 
 /**
- * Base rates by gross floor area (РЗП). The scale is descending: the rate of the
- * bracket the whole area falls into applies to every m², with a minimum per order.
+ * Progressive scale by gross floor area (РЗП), like tax brackets: each band of m² is charged at its own
+ * rate (the first 150 m² at the first rate, the next 250 m² at the second, …). The total therefore always
+ * grows with the area and there is no jump at the band limits. A minimum per order applies.
  */
 export const pricingTiers = [
-  { label: "до 150 м²", max: 150, kss: 2.5, full: 5.0 },
-  { label: "151–400 м²", max: 400, kss: 2.0, full: 4.2 },
-  { label: "401–800 м²", max: 800, kss: 1.6, full: 3.5 },
-  { label: "801–1500 м²", max: 1500, kss: 1.3, full: 2.9 },
-  { label: "над 1500 м²", max: Infinity, kss: 1.0, full: 2.3 },
+  { label: "първите 150 м²", upTo: 150, kss: 2.5, full: 5.0 },
+  { label: "от 151 до 400 м²", upTo: 400, kss: 2.0, full: 4.2 },
+  { label: "от 401 до 800 м²", upTo: 800, kss: 1.6, full: 3.5 },
+  { label: "от 801 до 1500 м²", upTo: 1500, kss: 1.3, full: 2.9 },
+  { label: "над 1500 м²", upTo: Infinity, kss: 1.0, full: 2.3 },
 ];
 export const pricingMin = { kss: 180, full: 350 };
+
+/** Complexity coefficient by type of project (applied to the scale price). */
+export const pricingKinds = [
+  { id: "new", label: "Ново строителство", k: 1.0 },
+  { id: "renovation", label: "Ремонт", k: 1.3 },
+  { id: "interior", label: "Интериор", k: 1.5 },
+  { id: "tender", label: "Обществена поръчка", k: 1.4 },
+];
 
 export const pricingExamples = [
   { label: "Апартамент", area: 90 },
@@ -95,6 +105,25 @@ export const pricingExamples = [
   { label: "Жилищна сграда", area: 640 },
   { label: "Хале", area: 2200 },
 ];
+
+/** Indicative price for an area and a complexity coefficient. Single source for the page and the calculator. */
+export function quote(area: number, k = 1) {
+  const sum = (col: "kss" | "full") => {
+    let total = 0;
+    let from = 0;
+    for (const t of pricingTiers) {
+      const band = Math.min(area, t.upTo) - from;
+      if (band <= 0) break;
+      total += band * t[col];
+      from = t.upTo;
+    }
+    return total * k;
+  };
+  const kss = Math.max(pricingMin.kss, sum("kss"));
+  const full = Math.max(pricingMin.full, sum("full"));
+  const tier = pricingTiers.findIndex((t) => area <= t.upTo);
+  return { kss, full, tier, avgKss: kss / area, avgFull: full / area };
+}
 
 export const otherPrices = [
   { item: "Оферта за търг", note: "КСС + техническо предложение", price: "от 400 €" },

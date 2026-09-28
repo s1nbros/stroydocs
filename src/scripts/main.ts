@@ -3,7 +3,7 @@
  * All animation lives in motion.ts (GSAP).
  */
 import { gsap } from "gsap";
-import { FORMSPREE_ENDPOINT, pricingMin, pricingTiers, site } from "../data/site";
+import { FORMSPREE_ENDPOINT, quote, site } from "../data/site";
 import "./motion";
 
 const root = document.documentElement;
@@ -88,6 +88,64 @@ document.fonts?.ready.then(moveIndicator);
 addEventListener("scroll", updateSpy, { passive: true });
 updateSpy();
 
+/* ---------- Viber: open the chat, fall back if the app doesn't take over ---------- */
+
+const viberHelp = document.querySelector<HTMLElement>("[data-viber-help]");
+let viberTimer = 0;
+
+function showViberHelp() {
+  if (!viberHelp) return;
+  viberHelp.hidden = false;
+  viberHelp.querySelector<HTMLElement>("[data-viber-copy]")?.focus({ preventScroll: true });
+}
+function hideViberHelp() {
+  if (viberHelp) viberHelp.hidden = true;
+}
+// Leaving the page (app opened) cancels the fallback
+const cancelViberFallback = () => clearTimeout(viberTimer);
+addEventListener("blur", cancelViberFallback);
+addEventListener("pagehide", cancelViberFallback);
+document.addEventListener("visibilitychange", () => document.hidden && cancelViberFallback());
+
+document.querySelectorAll<HTMLAnchorElement>('a[href^="viber:"]').forEach((link) => {
+  link.addEventListener("click", () => {
+    hideViberHelp();
+    clearTimeout(viberTimer);
+    // The browser hands viber:// to the app; if we are still here and focused after 1.6 s, it didn't open
+    viberTimer = window.setTimeout(() => {
+      if (!document.hidden && document.hasFocus()) showViberHelp();
+    }, 1600);
+  });
+});
+viberHelp?.querySelector("[data-viber-close]")?.addEventListener("click", hideViberHelp);
+document.addEventListener("keydown", (e) => e.key === "Escape" && hideViberHelp());
+viberHelp?.querySelector<HTMLButtonElement>("[data-viber-copy]")?.addEventListener("click", async (e) => {
+  const btn = e.currentTarget as HTMLButtonElement;
+  const value = btn.dataset.viberCopy ?? "";
+  const label = btn.querySelector("span");
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(value);
+    ok = true;
+  } catch {
+    // Older iOS / non-secure contexts: copy through a temporary field
+    const field = Object.assign(document.createElement("textarea"), { value, readOnly: true });
+    field.style.cssText = "position:fixed;opacity:0";
+    document.body.append(field);
+    field.select();
+    ok = document.execCommand("copy");
+    field.remove();
+  }
+  if (ok) {
+    btn.classList.add("is-done");
+    if (label) label.textContent = "Копирано";
+  } else {
+    // Last resort: select the number so the user can copy it by hand
+    const num = viberHelp.querySelector(".viber-help-number b");
+    if (num) getSelection()?.selectAllChildren(num);
+  }
+});
+
 /* ---------- Forms (Formspree) ---------- */
 
 const isPlaceholder = FORMSPREE_ENDPOINT.includes("YOUR_FORM_ID");
@@ -133,12 +191,6 @@ document.querySelectorAll<HTMLFormElement>("form[data-form]").forEach((form) => 
 const eur = (n: number) => `${Math.round(n).toLocaleString("bg-BG")} €`;
 const rate = (n: number) => `${n.toFixed(2).replace(".", ",")} €/м²`;
 
-function quote(area: number) {
-  const i = pricingTiers.findIndex((t) => area <= t.max);
-  const t = pricingTiers[i];
-  return { tier: i, t, kss: Math.max(pricingMin.kss, area * t.kss), full: Math.max(pricingMin.full, area * t.full) };
-}
-
 const calc = document.querySelector<HTMLElement>("[data-calc]");
 if (calc) {
   const input = calc.querySelector<HTMLInputElement>("[data-calc-input]")!;
@@ -165,19 +217,37 @@ if (calc) {
     });
   };
 
+  const kinds = calc.querySelectorAll<HTMLButtonElement>("[data-calc-kind]");
+  let k = 1;
+
   const update = () => {
     const area = Number(input.value);
-    const q = quote(area);
+    const q = quote(area, k);
     areaOut.textContent = `${area.toLocaleString("bg-BG")} м²`;
-    kssRate.textContent = rate(q.t.kss);
-    fullRate.textContent = rate(q.t.full);
+    kssRate.textContent = `средно ${rate(q.avgKss)}`;
+    fullRate.textContent = `средно ${rate(q.avgFull)}`;
     input.style.setProperty("--p", `${((area - Number(input.min)) / (Number(input.max) - Number(input.min))) * 100}%`);
-    rows.forEach((r) => r.classList.toggle("is-active", Number(r.dataset.tier) === q.tier));
+    // Bands the area passes through are "used"; the band it ends in is the active one
+    rows.forEach((r) => {
+      const i = Number(r.dataset.tier);
+      r.classList.toggle("is-active", i === q.tier);
+      r.classList.toggle("is-used", i < q.tier);
+    });
     chips.forEach((c) => c.classList.toggle("is-active", Number(c.dataset.calcSet) === area));
     tweenTo({ kss: q.kss, full: q.full });
   };
 
   input.addEventListener("input", update);
+  kinds.forEach((c) =>
+    c.addEventListener("click", () => {
+      k = Number(c.dataset.calcKind);
+      kinds.forEach((o) => {
+        o.classList.toggle("is-active", o === c);
+        o.setAttribute("aria-checked", String(o === c));
+      });
+      update();
+    }),
+  );
   chips.forEach((c) =>
     c.addEventListener("click", () => {
       input.value = c.dataset.calcSet!;

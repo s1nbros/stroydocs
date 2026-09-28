@@ -76,7 +76,7 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
           <i class="fa-solid fa-phone" aria-hidden="true"></i>
           {site.phoneDisplay}
         </a>
-        <a href={site.viberHref} class="btn-dark text-[17px]">
+        <a href={site.viberHref} class="btn-dark text-[17px]" data-viber>
           <i class="fa-brands fa-viber" aria-hidden="true"></i> Viber
         </a>
         <a href={site.whatsappHref} class="btn-dark text-[17px]" target="_blank" rel="noopener">
@@ -144,6 +144,27 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
 </footer>
 
 <div class="fab">
-  <a href={site.viberHref} class="fab-viber" aria-label="Пишете ни във Viber"><i class="fa-brands fa-viber" aria-hidden="true"></i></a>
+  <a href={site.viberHref} class="fab-viber" aria-label="Пишете ни във Viber" data-viber><i class="fa-brands fa-viber" aria-hidden="true"></i></a>
   <a href={site.phoneHref} class="fab-call" aria-label={`Обадете се на ${site.phoneDisplay}`}><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
 </div>
+
+<!-- Shown when a Viber link doesn't open the app (no Viber installed, desktop browser, blocked) -->
+<div class="viber-help" role="dialog" aria-modal="false" aria-labelledby="viber-help-title" hidden data-viber-help>
+  <button type="button" class="viber-help-close" aria-label="Затвори" data-viber-close>
+    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+  </button>
+  <p id="viber-help-title" class="viber-help-title"><i class="fa-brands fa-viber" aria-hidden="true"></i> Viber не се отвори?</p>
+  <p class="viber-help-text">Намерете ни във Viber по номер или изберете друг начин:</p>
+  <div class="viber-help-number">
+    <b>{site.phoneDisplay}</b>
+    <button type="button" class="viber-help-copy" data-viber-copy={site.phoneE164}>
+      <i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Копирай</span>
+    </button>
+  </div>
+  <div class="viber-help-actions">
+    <a href={site.viberHref} class="viber-help-btn viber">Опитай пак</a>
+    <a href={site.phoneHref} class="viber-help-btn">Обади се</a>
+    <a href={site.whatsappHref} class="viber-help-btn" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</div>
+

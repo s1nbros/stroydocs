@@ -1,9 +1,12 @@
 ---
-import { otherPrices, pricingExamples, pricingMin, pricingTiers } from "../data/site";
+import { otherPrices, pricingExamples, pricingKinds, pricingMin, pricingTiers, quote } from "../data/site";
 import { Image } from "astro:assets";
 import actsBinder from "../assets/acts-binder.jpg";
 
 // Real project: КСС for the rough construction of a mixed-use complex in Mladost
+const q0 = quote(640);
+const fmtEur = (n: number) => `${Math.round(n).toLocaleString("bg-BG")} €`;
+const fmtRate = (n: number) => `${n.toFixed(2).replace(".", ",")} €/м²`;
 const caseStats = [
   { value: 4, suffix: "", decimals: 0, label: "сгради + основи" },
   { value: 222, suffix: "", decimals: 0, label: "позиции в КСС" },
@@ -72,16 +75,16 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
     <p class="eyebrow" data-reveal>Цени</p>
     <Heading id="pricing-title" text="Цена на квадрат." dim="Колкото по-голям обектът — толкова по-ниска." />
     <p class="lead" data-reveal style="--i:2">
-      Скàлата е <AnnotatedText client:visible variant="circle" color="text-[#c8963e]" delay={0.6}>низходяща</AnnotatedText> — при голям обект цената на квадрат пада, но общата сума расте значително.
+      Скàлата е <AnnotatedText client:visible variant="circle" color="text-[#c8963e]" delay={0.6}>прогресивна</AnnotatedText> — като данъчните ставки. Всеки следващ диапазон квадратура се смята по по-ниска цена: средната цена на квадрат пада, а общата сума винаги расте с площта.
     </p>
 
     <div class="mt-14 grid items-start gap-6 lg:grid-cols-[1.25fr_1fr]">
       <!-- Base rates -->
       <div class="price-table" data-reveal data-price-table role="table" aria-label="Базови ставки по РЗП">
         <div class="price-head" role="row">
-          <span role="columnheader">Площ (РЗП)</span>
-          <span role="columnheader">КСС самостоятелно</span>
-          <span role="columnheader">Пълен документален пакет</span>
+          <span role="columnheader">Диапазон от РЗП</span>
+          <span role="columnheader">КСС самостоятелно, за всеки м²</span>
+          <span role="columnheader">Пълен пакет, за всеки м²</span>
         </div>
         {
           pricingTiers.map((t, i) => (
@@ -89,17 +92,23 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
               <span role="cell" class="price-area">{t.label}</span>
               <span role="cell">
                 <b>{t.kss.toFixed(2).replace(".", ",")} €/м²</b>
-                {i === 0 && <small> (мин. {pricingMin.kss} €)</small>}
                 <i class="price-bar" style={`--w:${((t.kss / 5.0) * 100).toFixed(1)}%`} />
               </span>
               <span role="cell">
                 <b>{t.full.toFixed(2).replace(".", ",")} €/м²</b>
-                {i === 0 && <small> (мин. {pricingMin.full} €)</small>}
                 <i class="price-bar accent" style={`--w:${((t.full / 5.0) * 100).toFixed(1)}%`} />
               </span>
             </div>
           ))
         }
+        <div class="price-notes">
+          <p><b>Как се смята:</b> 640 м² = 150 м² × 2,50 + 250 м² × 2,00 + 240 м² × 1,60 = 1 259 € за КСС.</p>
+          <p><b>Минимална поръчка:</b> {pricingMin.kss} € за КСС · {pricingMin.full} € за пълен пакет.</p>
+          <p>
+            <b>Коефициент за сложност:</b>{" "}
+            {pricingKinds.filter((k) => k.k !== 1).map((k, i) => <span>{i > 0 && " · "}{k.label.toLowerCase()} ×{k.k.toString().replace(".", ",")}</span>)}
+          </p>
+        </div>
       </div>
 
       <!-- Live calculator -->
@@ -119,18 +128,29 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
             ))
           }
         </div>
+        <p class="mt-6 text-[15px] font-medium">Вид обект</p>
+        <div class="mt-3 flex flex-wrap gap-2" role="radiogroup" aria-label="Вид обект">
+          {
+            pricingKinds.map((k, i) => (
+              <button type="button" role="radio" aria-checked={i === 0 ? "true" : "false"} class:list={["calc-chip", i === 0 && "is-active"]} data-calc-kind={k.k}>
+                {k.label}{k.k !== 1 && <span class="calc-k">×{k.k.toString().replace(".", ",")}</span>}
+              </button>
+            ))
+          }
+        </div>
         <dl class="mt-8 grid grid-cols-2 gap-3" aria-live="polite">
           <div class="calc-out">
             <dt>КСС</dt>
-            <dd data-calc-kss>1 024 €</dd>
-            <span data-calc-kss-rate>1,60 €/м²</span>
+            <dd data-calc-kss>{fmtEur(q0.kss)}</dd>
+            <span data-calc-kss-rate>средно {fmtRate(q0.avgKss)}</span>
           </div>
           <div class="calc-out accent">
             <dt>Пълен пакет</dt>
-            <dd data-calc-full>2 240 €</dd>
-            <span data-calc-full-rate>3,50 €/м²</span>
+            <dd data-calc-full>{fmtEur(q0.full)}</dd>
+            <span data-calc-full-rate>средно {fmtRate(q0.avgFull)}</span>
           </div>
         </dl>
+        <p class="calc-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Ориентировъчно. Точната цена зависи от вида на обекта и обхвата.</p>
         <a href="#contact" class="btn-white mt-6 w-full"><LetterCascade client:visible text="Поискай точна оферта" /> <span class="btn-arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
