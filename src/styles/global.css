@@ -2652,38 +2652,6 @@ select.field {
   block-size: auto;
 }
 
-/* Case study: per-building share bars */
-.case-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.case-bar i {
-  display: block;
-  height: 6px;
-  width: var(--w);
-  border-radius: 3px;
-  background: linear-gradient(90deg, #a8792c, #d4a550);
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 1.2s var(--ease);
-  transition-delay: calc(0.2s + var(--i, 0) * 0.12s);
-}
-.case-bar b {
-  color: #8a96a8;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-}
-.bars-in .case-bar i,
-li[style] .case-bar i {
-  transition-delay: calc(0.2s + var(--i, 0) * 0.12s);
-}
-.bars-in .case-bar i {
-  transform: scaleX(1);
-}
-
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2747,9 +2715,6 @@ li[style] .case-bar i {
   }
   .js [data-reveal-photo] .photo-card {
     clip-path: none !important;
-  }
-  .case-bar i {
-    transform: none !important;
   }
   .h2 .w > span,
   .price-bar {
