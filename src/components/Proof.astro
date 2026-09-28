@@ -3,11 +3,21 @@ import { otherPrices, pricingExamples, pricingMin, pricingTiers } from "../data/
 import { Image } from "astro:assets";
 import actsBinder from "../assets/acts-binder.jpg";
 
+// Real project: КСС for the rough construction of a mixed-use complex in Mladost (source: offer PDF, 10 pages)
 const caseStats = [
-  { value: 640, suffix: " м²", label: "РЗП на обекта" },
-  { value: 180, suffix: "", label: "Позиции в КСС" },
-  { value: 31, suffix: " ч", label: "До готова КСС" },
+  { value: 222, suffix: "", label: "позиции в КСС" },
+  { value: 111711, suffix: " м²", label: "кофраж" },
+  { value: 32672, suffix: " м³", label: "бетон" },
+  { value: 3723, suffix: " т", label: "армировка" },
 ];
+const caseSections = [
+  { name: "Етап 0 — Основи (фундаменти)", value: 614081.24, share: 11.5 },
+  { name: "Сграда 1 — блок „Офиси“", value: 1179207.92, share: 22.1 },
+  { name: "Сграда 2 — вход „А“", value: 1036027.84, share: 19.5 },
+  { name: "Сграда 3 — вход „Б“", value: 1291169.11, share: 24.2 },
+  { name: "Сграда 4 — вход „В“", value: 1204963.72, share: 22.6 },
+];
+const eur = (n: number) => n.toLocaleString("bg-BG", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 import Tape from "./Tape.astro";
 import Heading from "./Heading.astro";
 import { AnnotatedText } from "@/components/ui/annotated-text";
@@ -18,17 +28,22 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
 <Tape />
 <section class="section surface-a" data-word="Казус" aria-labelledby="case-title">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>Казус · кв. Малинова долина, София</p>
-    <Heading id="case-title" class="max-w-4xl" text="КСС готова за 31 часа." dim="Поръчката — спечелена." />
+    <p class="eyebrow" data-reveal>Казус · ж.к. „Младост“, София</p>
+    <Heading id="case-title" class="max-w-4xl" text="КСС за груб строеж на четири сгради." dim="222 позиции за 5,3 милиона евро." />
+    <p class="lead max-w-3xl" data-reveal>
+      Сграда със смесено предназначение — офиси, жилищни входове „А“, „Б“ и „В“, магазини, трафопост и подземен гараж.
+      Изготвихме пълната КСС за кофражни, армировъчни и бетонови работи на{" "}
+      <strong class="font-semibold text-white">„ЧИВИ СТРОЙ“ ЕООД</strong> — от фундаментната плоча до кота +46.13.
+    </p>
 
-    <dl class="mt-14 grid grid-cols-3 border-y border-white/10">
+    <dl class="mt-14 grid grid-cols-2 border-y border-white/10 lg:grid-cols-4">
       {
         caseStats.map((s, i) => (
-          <div class="py-8 pr-3 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-white/10 [&:not(:first-child)]:pl-4 sm:py-12 sm:[&:not(:first-child)]:pl-8" data-reveal style={`--i:${i}`}>
+          <div class="border-white/10 py-8 pr-3 max-lg:[&:nth-child(n+3)]:border-t lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:pl-8 max-lg:[&:nth-child(even)]:border-l max-lg:[&:nth-child(even)]:pl-5 sm:py-12" data-reveal style={`--i:${i}`}>
             <dt class="sr-only">{s.label}</dt>
-            <dd class="font-display text-[clamp(30px,8vw,104px)] leading-none font-semibold whitespace-nowrap tabular-nums">
-              <span data-count={s.value} data-suffix={s.suffix} data-decimals="0" data-scroll-count>
-                {`${s.value}${s.suffix}`}
+            <dd class="font-display text-[clamp(28px,4vw,52px)] leading-none font-semibold whitespace-nowrap tabular-nums">
+              <span data-count={s.value} data-suffix={s.suffix} data-decimals="0" data-group data-scroll-count>
+                {`${s.value.toLocaleString("bg-BG")}${s.suffix}`}
               </span>
             </dd>
             <dd class="mt-3 text-sm text-muted sm:text-base">{s.label}</dd>
@@ -37,14 +52,48 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
       }
     </dl>
 
-    <figure class="mt-14 max-w-3xl" data-reveal>
-      <blockquote class="text-[clamp(22px,2.8vw,34px)] leading-snug font-medium tracking-[-0.02em]">
-        „Имахме два дни до срока за подаване. Пратих чертежите в петък вечер, в неделя сутрин КСС беше в пощата ми.
-        Спечелихме обекта.“
-      </blockquote>
-      <!-- TODO: replace with the real client name and company (with written permission) -->
-      <figcaption class="mt-6 text-muted">— [Име Фамилия], управител, [Строителна фирма]</figcaption>
-    </figure>
+    <div class="mt-14 grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+      <div class="case-breakdown" data-reveal data-case-bars>
+        <p class="text-sm font-medium text-muted">Рекапитулация по раздели</p>
+        <ul class="mt-5 grid gap-5">
+          {
+            caseSections.map((c, i) => (
+              <li style={`--i:${i}`}>
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="text-[16px] text-[#d3d9e2]">{c.name}</span>
+                  <span class="font-display text-[18px] font-semibold whitespace-nowrap tabular-nums">{eur(c.value)}</span>
+                </div>
+                <div class="case-bar mt-2"><i style={`--w:${(c.share / 24.2) * 100}%`} /><b>{c.share.toLocaleString("bg-BG")}%</b></div>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-7 flex flex-wrap items-baseline justify-between gap-3 border-t border-white/10 pt-5">
+          <span class="text-muted">Общо без ДДС · с ДДС 20%</span>
+          <span class="font-display text-[clamp(22px,2.4vw,30px)] font-semibold tabular-nums">5 325 449,83 € <span class="text-muted">· 6 390 539,80 €</span></span>
+        </div>
+      </div>
+
+      <div data-reveal style="--i:1">
+        <p class="text-sm font-medium text-muted">Какво съдържа документът</p>
+        <ul class="mt-5 grid gap-3 text-[16px] text-[#c7cfdb]">
+          {
+            [
+              "Етап „Основи“ + 4 сгради, всяка по кофраж, бетон и армировка",
+              "Позиция по позиция за всяка плоча — от кота -8.10 до +46.13",
+              "Бетон C30/37, количества в м², м³ и кг",
+              "Рекапитулация, междинни суми, ДДС и непредвидени разходи",
+              "Условия: обхват, плащане с Акт 19, инфлационна клауза, валидност",
+            ].map((t) => (
+              <li class="flex gap-3">
+                <i class="fa-solid fa-check mt-1 text-[#c8963e]" aria-hidden="true" />
+                {t}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
 
     <div class="mt-16 grid items-center gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
       <div class="tilt" data-tilt data-reveal-photo>

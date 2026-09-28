@@ -117,6 +117,9 @@ if (reduceMotion) {
       $$("[data-doc-count]", el).forEach((n, i) => countTo(n, Number(n.dataset.docCount), { duration: 0.9, delay: 2 + i * 0.15, format: money }));
     },
   });
+  $$("[data-case-bars]").forEach((el) =>
+    ScrollTrigger.create({ trigger: el, start: "top 80%", once: true, onEnter: () => el.classList.add("bars-in") }),
+  );
   $$("[data-reveal-photo]").forEach((el) =>
     ScrollTrigger.create({ trigger: el, start: "top 80%", once: true, onEnter: () => el.classList.add("is-in") }),
   );
@@ -125,7 +128,12 @@ if (reduceMotion) {
       trigger: el,
       start: "top 85%",
       once: true,
-      onEnter: () => countTo(el, Number(el.dataset.count), { suffix: el.dataset.suffix, duration: 1.8 }),
+      onEnter: () =>
+        countTo(el, Number(el.dataset.count), {
+          suffix: el.dataset.suffix,
+          duration: 1.8,
+          format: el.dataset.group !== undefined ? (n) => Math.round(n).toLocaleString("bg-BG") : undefined,
+        }),
     }),
   );
 

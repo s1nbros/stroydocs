@@ -134,9 +134,8 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
 
 <footer class="relative z-[2] border-t border-white/10 bg-[#0a111c]">
   <div class="wrap flex flex-col gap-8 py-12 sm:flex-row sm:items-center sm:justify-between">
-    <a href="#top" class="flex items-center gap-3 text-lg font-semibold tracking-tight">
-      <span class="grid h-10 w-10 place-items-center rounded-full bg-white"><img src="/assets/logo.svg" alt="" width="28" height="28" /></span>
-      {site.name}
+    <a href="#top" aria-label={`${site.name} — начало`}>
+      <img src="/brand/stroydocs-logo-dark.svg" alt="Stroydocs — КСС, актове, оферти" width="236" height="72" class="h-[72px] w-auto" />
     </a>
     <p class="text-sm text-muted">Строителна документация за изпълнители · {site.city}</p>
     <a href={site.phoneHref} class="text-lg font-semibold">{site.phoneDisplay}</a>

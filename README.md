@@ -45,3 +45,20 @@ The Bulgarian `locl` letterforms are switched off in `global.css` so the Cyrilli
 
 The hero background is the code-drawn construction scene. To use a clip instead, put the MP4 in `public/media/`
 and replace `<ConstructionScene />` in `Hero.astro` with a muted, looping, `playsinline` `<video>`.
+
+## Logo
+
+Brand files live in `public/brand/`:
+
+| File | Use |
+|---|---|
+| `stroydocs-logo-dark.svg` / `stroydocs-logo-on-navy.png` | Horizontal logo for dark backgrounds |
+| `stroydocs-logo-light.svg` / `stroydocs-logo-on-white.png` | Horizontal logo for white backgrounds (documents, offers, email) |
+| `stroydocs-app-icon.svg` / `-512.png` / `-1024.png` | Square icon (Google Business, Viber, social avatars) |
+| `stroydocs-mark.svg` | Symbol without background |
+| `stroydocs-favicon.svg` | Simplified symbol for 16–32 px (also `/favicon.svg`, `/apple-touch-icon.png`) |
+
+The mark is a document sheet with a folded corner, a tower crane over a building inside it, and a brass
+check seal. Colours: navy `#0d1522`, cream `#f4efe4`, brass `#c8963e`. Wordmark: Source Serif 4 SemiBold,
+tagline: IBM Plex Mono — both converted to outlines. Regenerate the SVGs with
+`python tools/brand/make_logo.py` (needs `fonttools`, `brotli`, `uharfbuzz`).
