@@ -7,8 +7,7 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: replace with the production domain once it is registered
-  site: "https://stroydocs.bg",
+  site: "https://stroydocs.net",
   vite: {
     plugins: [tailwindcss()],
   },

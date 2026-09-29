@@ -14,7 +14,7 @@ Astro + Tailwind CSS, static output, deployed to Vercel.
 1. **Formspree** — create a form at formspree.io and replace `YOUR_FORM_ID` in `src/data/site.ts`
    (`FORMSPREE_ENDPOINT`). Until then both forms show a "call us instead" message.
    File attachments require a paid Formspree plan.
-2. **Domain** — `site` in `astro.config.mjs` and the sitemap URL in `public/robots.txt` assume `https://stroydocs.bg`.
+2. **Domain** — `site` in `astro.config.mjs` and the sitemap URL in `public/robots.txt` assume `https://stroydocs.net`.
 3. **Placeholders** — email in `src/data/site.ts`; case-study quote author in `src/components/Proof.astro`.
 
 ## Structure

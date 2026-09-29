@@ -7,8 +7,8 @@ export const site = {
   // Opens a Viber chat with the number (international format, "+" encoded as %2B)
   viberHref: "viber://chat?number=%2B359884782777",
   whatsappHref: "https://wa.me/359884782777",
-  // TODO: replace with the real mailbox
-  email: "office@stroydocs.bg",
+  // TODO: create this mailbox on stroydocs.net (or replace with the address you use)
+  email: "office@stroydocs.net",
   title: "КСС, актове и оферти за строителни фирми — готови до 48 часа | Stroydocs",
   description:
     "Изготвяне на КСС, актове по Наредба №3, оферти и документи за обществени поръчки за строителни фирми в София. Изпращате файл — оферта до 2 часа, готов документ до 48 часа.",
