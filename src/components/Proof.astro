@@ -60,7 +60,7 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
       <div data-reveal style="--i:1">
       <p class="font-display text-[clamp(52px,7vw,88px)] leading-none">200+</p>
       <p class="mt-5 max-w-xl text-lg leading-relaxed text-[#a9b3c2]">
-        изготвени акта и над 40 КСС за софийски изпълнители. Познаваме Наредба №3 и какво гледат техническият контрол и
+        изготвени акта и над 40 КСС за строителни изпълнители. Познаваме Наредба №3 и какво гледат техническият контрол и
         инвеститорите — документите минават <AnnotatedText client:visible variant="highlight" color="text-[#c8963e]/35" delay={0.5}>от първия път</AnnotatedText>.
       </p>
       </div>
@@ -104,10 +104,6 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
         <div class="price-notes">
           <p><b>Как се смята:</b> 640 м² = 150 м² × 2,50 + 250 м² × 2,00 + 240 м² × 1,60 = 1 259 € за КСС.</p>
           <p><b>Минимална поръчка:</b> {pricingMin.kss} € за КСС · {pricingMin.full} € за пълен пакет.</p>
-          <p>
-            <b>Коефициент за сложност:</b>{" "}
-            {pricingKinds.filter((k) => k.k !== 1).map((k, i) => <span>{i > 0 && " · "}{k.label.toLowerCase()} ×{k.k.toString().replace(".", ",")}</span>)}
-          </p>
         </div>
       </div>
 
@@ -133,7 +129,7 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
           {
             pricingKinds.map((k, i) => (
               <button type="button" role="radio" aria-checked={i === 0 ? "true" : "false"} class:list={["calc-chip", i === 0 && "is-active"]} data-calc-kind={k.k}>
-                {k.label}{k.k !== 1 && <span class="calc-k">×{k.k.toString().replace(".", ",")}</span>}
+                {k.label}
               </button>
             ))
           }

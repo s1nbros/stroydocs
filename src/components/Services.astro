@@ -2,10 +2,13 @@
 import { services } from "../data/site";
 import BigMarquee from "./BigMarquee.astro";
 
-const pains = ["Три дни в Excel за една КСС.", "Акт 19 в неделя вечер.", "Липсващ документ седмица преди Акт 15."];
+const pains = [
+  "Оферта до петък, а чертежите са 40 листа.",
+  "Техническият контрол връща акта за корекция.",
+  "Количествата в Акт 19 не съвпадат с КСС — плащането се бави.",
+];
 import Tape from "./Tape.astro";
 import Heading from "./Heading.astro";
-import { AnnotatedText } from "@/components/ui/annotated-text";
 ---
 
 <BigMarquee words={["КСС", "Актове", "Оферти", "Търгове", "Документален офис"]} />
@@ -24,9 +27,6 @@ import { AnnotatedText } from "@/components/ui/annotated-text";
         ))
       }
     </div>
-    <p data-reveal style="--i:3" class="lead">
-      Това го задраскваме ние. <strong class="font-semibold text-white"><AnnotatedText client:visible variant="underline" color="text-[#c8963e]" delay={1.2}>Вие оставате на обекта.</AnnotatedText></strong>
-    </p>
   </div>
 </section>
 
