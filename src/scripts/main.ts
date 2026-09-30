@@ -3,7 +3,7 @@
  * All animation lives in motion.ts (GSAP).
  */
 import { gsap } from "gsap";
-import { FORMSPREE_ENDPOINT, quote, site } from "../data/site";
+import { FORMSPREE_ENDPOINT, checklistStages, quote, site } from "../data/site";
 import "./motion";
 
 const root = document.documentElement;
@@ -145,6 +145,98 @@ viberHelp?.querySelector<HTMLButtonElement>("[data-viber-copy]")?.addEventListen
     if (num) getSelection()?.selectAllChildren(num);
   }
 });
+
+/* ---------- Free document checklist ---------- */
+
+const checklist = document.querySelector<HTMLElement>("[data-checklist]");
+if (checklist) {
+  const STORE = "sd-checklist-v1";
+  let saved: Record<string, boolean> = {};
+  try {
+    saved = JSON.parse(localStorage.getItem(STORE) ?? "{}");
+  } catch {}
+  const save = () => {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(saved));
+    } catch {}
+  };
+
+  const tabs = [...checklist.querySelectorAll<HTMLButtonElement>("[data-cl-tab]")];
+  const panels = [...checklist.querySelectorAll<HTMLElement>("[data-cl-panel]")];
+  const boxes = [...checklist.querySelectorAll<HTMLInputElement>("[data-cl-item]")];
+  const $ = (sel: string) => checklist.querySelector<HTMLElement>(sel)!;
+  let current = tabs[0]?.dataset.clTab ?? "";
+
+  boxes.forEach((b) => (b.checked = !!saved[b.dataset.clItem!]));
+
+  const render = () => {
+    const panel = panels.find((p) => p.dataset.clPanel === current)!;
+    const items = [...panel.querySelectorAll<HTMLInputElement>("[data-cl-item]")];
+    const done = items.filter((i) => i.checked).length;
+    const missing = items.length - done;
+    $("[data-cl-title]").textContent = panel.dataset.clTitleText ?? "";
+    $("[data-cl-done]").textContent = String(done);
+    $("[data-cl-total]").textContent = String(items.length);
+    $("[data-cl-bar]").style.width = `${(done / items.length) * 100}%`;
+    $(".checklist-progress").classList.toggle("is-done", missing === 0);
+    $("[data-cl-status]").textContent =
+      missing === 0
+        ? "Всичко е налице — папката е готова."
+        : done === 0
+          ? "Отметнете документите, които имате."
+          : `Липсват ${missing} ${missing === 1 ? "документ" : "документа"}. Можем да ги подготвим вместо вас.`;
+  };
+
+  const select = (id: string, focus = false) => {
+    current = id;
+    tabs.forEach((t) => {
+      const on = t.dataset.clTab === id;
+      t.classList.toggle("is-active", on);
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    panels.forEach((p) => (p.hidden = p.dataset.clPanel !== id));
+    render();
+  };
+
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => select(t.dataset.clTab!));
+    // Arrow keys move between tabs (WAI-ARIA tabs pattern)
+    t.addEventListener("keydown", (e) => {
+      const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (!step) return;
+      e.preventDefault();
+      select(tabs[(i + step + tabs.length) % tabs.length].dataset.clTab!, true);
+    });
+  });
+  boxes.forEach((b) =>
+    b.addEventListener("change", () => {
+      saved[b.dataset.clItem!] = b.checked;
+      save();
+      render();
+    }),
+  );
+
+  // Print the current stage as a clean one-page list with the missing items marked
+  $("[data-cl-print]").addEventListener("click", () => {
+    const stage = checklistStages.find((st) => st.id === current)!;
+    const rows = stage.items
+      .map((item, j) => `<li>${saved[`${stage.id}-${j}`] ? "☑" : "☐"} ${item}</li>`)
+      .join("");
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(`<!doctype html><html lang="bg"><meta charset="utf-8"><title>${stage.title} — ${site.name}</title>
+      <style>body{font:16px/1.6 system-ui,sans-serif;margin:40px;color:#111}h1{font-size:22px}ul{list-style:none;padding:0}li{padding:6px 0;border-bottom:1px solid #ddd}p{color:#666;font-size:13px}</style>
+      <h1>${stage.title}</h1><ul>${rows}</ul>
+      <p>Ориентировъчен списък. ${site.name} · ${site.phoneDisplay} · stroydocs.net</p>`);
+    w.document.close();
+    w.focus();
+    w.print();
+  });
+
+  render();
+}
 
 /* ---------- Forms (Formspree) ---------- */
 

@@ -19,11 +19,7 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
 <header class="header" id="site-header">
   <div class="header-bar">
     <a href="#top" class="brand" aria-label={`${site.name} — начало`}>
-      <span class="logo"><img src="/assets/logo.svg" alt="" width="52" height="52" /></span>
-      <span class="brand-text">
-        <b>{site.name}</b>
-        <small>КСС · Актове · Оферти</small>
-      </span>
+      <img class="brand-logo" src="/brand/stroydocs-logo-dark.svg" alt="StroyDocs — КСС, актове, оферти" width="427" height="128" />
     </a>
 
     <nav class="nav" aria-label="Основна навигация" data-nav>
@@ -83,8 +79,8 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
       </h1>
 
       <p class="subhead anim" style="--d: 0.28s">
-        Вие строите. Ние правим документите. Изпратете количествена сметка или чертеж —{" "}
-        <span class="whitespace-nowrap"><AnnotatedText client:visible variant="wavy" color="text-[#c8963e]" delay={2.4}>оферта до 2 часа</AnnotatedText>,</span> готов документ до 48.
+        Пратете ни чертежите и ние ще ви пратим оферта за цената{" "}
+        <span class="whitespace-nowrap"><AnnotatedText client:visible variant="wavy" color="text-[#c8963e]" delay={2.4}>в същия ден</AnnotatedText>.</span> Готовият документ е при вас до&nbsp;2&nbsp;дни.
       </p>
 
       <a href="#contact" class="cta anim" style="--d: 0.4s"><LetterCascade client:visible text="Изпрати файл" /> <span class="btn-arrow" aria-hidden="true">→</span></a>

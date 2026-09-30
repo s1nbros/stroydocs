@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <title>Stroydocs</title>
+  <title>StroyDocs</title>
   <rect width="64" height="64" rx="14" fill="#0d1522"/>
   <g transform="translate(6 6) scale(0.8125)">
     <path d="M13 4h24.5L52 18.5V56a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z" fill="#f4efe4"/>

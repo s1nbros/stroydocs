@@ -1,4 +1,4 @@
-# Stroydocs — website
+# StroyDocs — website
 
 Single-page marketing site (Bulgarian) for a construction documentation service in Sofia.
 Astro + Tailwind CSS, static output, deployed to Vercel.

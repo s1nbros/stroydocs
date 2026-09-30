@@ -1,5 +1,5 @@
 ---
-import { FORMSPREE_ENDPOINT, faq, projectTypes, site } from "../data/site";
+import { FORMSPREE_ENDPOINT, checklistStages, faq, projectTypes, site } from "../data/site";
 import BigMarquee from "./BigMarquee.astro";
 import Tape from "./Tape.astro";
 import Heading from "./Heading.astro";
@@ -7,33 +7,65 @@ import { AnnotatedText } from "@/components/ui/annotated-text";
 import { LetterCascade } from "@/components/ui/letter-cascade";
 ---
 
-<!-- Free checklist -->
+<!-- Free checklist: interactive, no sign-up (state kept in the browser) -->
 <section class="section surface-a" data-word="Безплатно" aria-labelledby="checklist-title">
   <div class="wrap">
-    <div class="checklist-card relative grid items-center gap-8 overflow-hidden rounded-[32px] p-8 sm:p-14 lg:grid-cols-2" data-reveal data-spot>
-      <div aria-hidden="true" class="pointer-events-none absolute -right-10 -bottom-16 font-display text-[240px] leading-none font-bold text-white/[0.04] select-none">15</div>
-      <div class="relative">
-        <p class="text-sm font-medium text-accent-soft">Безплатно</p>
-        <h2 id="checklist-title" class="mt-3 text-[clamp(30px,3.6vw,44px)] leading-[1.05] font-semibold tracking-[-0.04em]">
-          Чеклист: всички документи за папка Акт 15
-        </h2>
-        <p class="mt-4 text-lg text-[#a9b3c2]">Една страница. Отметнете и вижте какво липсва — преди да дойде комисията.</p>
+    <div class="checklist-card relative overflow-hidden rounded-[32px] p-6 sm:p-12" data-reveal data-checklist>
+      <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+        <div class="relative">
+          <p class="text-sm font-medium text-accent-soft">Безплатен инструмент</p>
+          <h2 id="checklist-title" class="mt-3 font-display text-[clamp(30px,3.6vw,46px)] leading-[1.08] font-semibold">
+            Чеклист за строителната документация
+          </h2>
+          <p class="mt-4 text-lg text-[#a9b3c2]">
+            Изберете етапа и отметнете какво вече имате — веднага виждате какво липсва. Без регистрация, отметките остават в браузъра ви.
+          </p>
+
+          <div class="checklist-progress mt-8" aria-live="polite">
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="text-[15px] font-medium" data-cl-title>{checklistStages[0].title}</span>
+              <span class="font-display text-[22px] font-semibold tabular-nums"><span data-cl-done>0</span> / <span data-cl-total>{checklistStages[0].items.length}</span></span>
+            </div>
+            <div class="checklist-bar mt-3"><i data-cl-bar></i></div>
+            <p class="mt-3 text-sm text-[#a9b3c2]" data-cl-status>Отметнете документите, които имате.</p>
+          </div>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#contact" class="btn-accent" data-cl-cta>Липсва ми документ <span class="btn-arrow" aria-hidden="true">→</span></a>
+            <button type="button" class="btn-dark" data-cl-print><i class="fa-solid fa-print" aria-hidden="true"></i> Отпечатай</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="checklist-tabs" role="tablist" aria-label="Етап на строежа">
+            {
+              checklistStages.map((st, i) => (
+                <button type="button" role="tab" id={`cl-tab-${st.id}`} aria-controls={`cl-panel-${st.id}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} class:list={["checklist-tab", i === 0 && "is-active"]} data-cl-tab={st.id}>
+                  {st.label}
+                </button>
+              ))
+            }
+          </div>
+          {
+            checklistStages.map((st, i) => (
+              <ul class="checklist-list" role="tabpanel" id={`cl-panel-${st.id}`} aria-labelledby={`cl-tab-${st.id}`} data-cl-panel={st.id} data-cl-title-text={st.title} hidden={i !== 0}>
+                {st.items.map((item, j) => (
+                  <li>
+                    <label class="checklist-item">
+                      <input type="checkbox" data-cl-item={`${st.id}-${j}`} />
+                      <span class="checklist-box" aria-hidden="true"><i class="fa-solid fa-check" /></span>
+                      <span class="checklist-text">{item}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            ))
+          }
+          <p class="mt-4 text-[13px] text-[#8a96a8]">
+            Ориентировъчен списък. Точните документи зависят от категорията на строежа, проекта и изискванията на възложителя.
+          </p>
+        </div>
       </div>
-      <form class="relative flex flex-col gap-3 sm:flex-row" data-form action={FORMSPREE_ENDPOINT} method="POST">
-        <input type="hidden" name="_subject" value="Заявка за чеклист Акт 15" />
-        <label for="checklist-email" class="sr-only">Имейл адрес</label>
-        <input
-          id="checklist-email"
-          name="email"
-          type="email"
-          required
-          autocomplete="email"
-          placeholder="вашият@имейл.bg"
-          class="field min-h-[56px] flex-1 !rounded-full px-6"
-        />
-        <button type="submit" class="btn-accent">Изпрати ми го <span class="btn-arrow" aria-hidden="true">→</span></button>
-        <p class="form-status text-sm sm:absolute sm:top-full sm:mt-3" role="status" aria-live="polite"></p>
-      </form>
     </div>
   </div>
 </section>
@@ -44,7 +76,7 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
   <div class="wrap grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
     <div>
       <p class="eyebrow" data-reveal>Въпроси</p>
-      <Heading id="faq-title" text="Често" dim="питат." />
+      <Heading id="faq-title" text="Какво питат хората" dim="най-често." />
     </div>
     <div class="faq border-t border-white/10" data-reveal style="--i:2">
       {
@@ -70,7 +102,7 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
     <div>
       <p class="eyebrow" data-reveal>Запитване</p>
       <Heading id="contact-title" text="Изпратете файла." dim="Цената е до 2 часа." />
-      <p class="lead" data-reveal style="--i:2"><AnnotatedText client:visible variant="box" color="text-[#c8963e]" delay={0.8}>Четири полета.</AnnotatedText> Без регистрация. Или просто се обадете или пишете във Viber.</p>
+      <p class="lead" data-reveal style="--i:2">Четири полета. Без регистрация. Или просто се обадете или пишете във Viber.</p>
       <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap" data-reveal style="--i:3">
         <a href={site.phoneHref} class="btn-white text-[17px]">
           <i class="fa-solid fa-phone" aria-hidden="true"></i>
@@ -135,9 +167,9 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
 <footer class="relative z-[2] border-t border-white/10 bg-[#0a111c]">
   <div class="wrap flex flex-col gap-8 py-12 sm:flex-row sm:items-center sm:justify-between">
     <a href="#top" aria-label={`${site.name} — начало`}>
-      <img src="/brand/stroydocs-logo-dark.svg" alt="Stroydocs — КСС, актове, оферти" width="236" height="72" class="h-[72px] w-auto" />
+      <img src="/brand/stroydocs-logo-dark.svg" alt="StroyDocs — КСС, актове, оферти" width="236" height="72" class="h-[72px] w-auto" />
     </a>
-    <p class="text-sm text-muted">Строителна документация за изпълнители · {site.city}</p>
+    <p class="text-sm text-muted">Строителна документация · {site.city}</p>
     <a href={site.phoneHref} class="text-lg font-semibold">{site.phoneDisplay}</a>
   </div>
   <p class="wrap border-t border-white/10 py-6 text-xs text-white/35">© {new Date().getFullYear()} {site.name}. Всички права запазени.</p>

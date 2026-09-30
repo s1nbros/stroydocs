@@ -1,46 +1,56 @@
 ---
-import { site } from "../data/site";
-
-const software = ["Въвеждате всеки ред сами", "Абонамент, обучение, настройки", "Грешката е ваша отговорност", "Вечерите пак отиват за документи"];
-const us = ["Пращате файл — получавате готов документ", "Плащате само за свършена работа", "Проверяваме количества и цени вместо вас", "Вие сте на обекта, не пред компютъра"];
 import Heading from "./Heading.astro";
-import { FlippingWordSwap } from "@/components/ui/flipping-word-swap";
+
+// Reasons to choose us — taken from the Alo.bg listing
+const reasons = [
+  {
+    icon: "fa-solid fa-hand-holding-dollar",
+    title: "Цена и срок в същия ден",
+    text: "Пращате чертежите или само данните за обекта. Същия ден получавате фиксирана цена и срок — без ангажимент.",
+  },
+  {
+    icon: "fa-solid fa-file-signature",
+    title: "Готово за подпис",
+    text: "Предаваме в Excel и PDF, подредено и проверено. Две корекции са включени в цената.",
+  },
+  {
+    icon: "fa-solid fa-bolt",
+    title: "До два работни дни",
+    text: "Стандартният срок е до два работни дни. Когато е спешно — същия ден.",
+  },
+  {
+    icon: "fa-solid fa-layer-group",
+    title: "Всичко на едно място",
+    text: "КСС, актове по Наредба №3, графици и обществени поръчки — един изпълнител за цялата документация на обекта.",
+  },
+  {
+    icon: "fa-solid fa-map-location-dot",
+    title: "В цялата страна",
+    text: "Работим дистанционно по имейл и Viber — обектът може да е навсякъде в България.",
+  },
+  {
+    icon: "fa-solid fa-puzzle-piece",
+    title: "И поединично",
+    text: "Не ви трябва пакет? Възлагате само документа, който ви липсва.",
+  },
+];
 ---
 
-<section class="section surface-a" data-word="Разликата" aria-labelledby="diff-title">
+<section class="section surface-a" data-word="Защо нас" aria-labelledby="diff-title">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>Защо нас, а не софтуер</p>
-    <Heading id="diff-title" class="max-w-4xl" text="Софтуерът ви дава празна таблица." dim="Ние ви даваме готов документ." />
+    <p class="eyebrow" data-reveal>Защо да изберете нас</p>
+    <Heading id="diff-title" class="max-w-4xl" text="Вие строите." dim="Документите са наша грижа." />
 
-    <div class="mt-14 grid gap-4 md:grid-cols-2">
-      <div class="vs-card border border-white/10" data-reveal data-spot>
-        <p class="text-sm font-medium text-muted">Софтуер за сметки</p>
-        <p class="mt-2 text-2xl font-semibold tracking-tight text-white/60"><FlippingWordSwap client:visible word1="Работата е ваша." word2="И грешките — също." className="flip-left" /></p>
-        <ul class="mt-8">
-          {
-            software.map((t) => (
-              <li class="vs-item text-[#8793a5]">
-                <span aria-hidden="true" class="text-white/30">✕</span>
-                {t}
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-      <div class="vs-card bg-white text-black" data-reveal style="--i:1">
-        <p class="text-sm font-medium text-black/50">{site.name}</p>
-        <p class="mt-2 text-2xl font-semibold tracking-tight"><FlippingWordSwap client:visible word1="Работата е наша." word2="Вие сте на обекта." toClassName="text-[#c8963e]" className="flip-left" /></p>
-        <ul class="mt-8">
-          {
-            us.map((t) => (
-              <li class="vs-item !border-black/10">
-                <i class="fa-solid fa-check mt-1 text-black" aria-hidden="true"></i>
-                {t}
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+    <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        reasons.map((r, i) => (
+          <div class="vs-card reason-card border border-white/10" data-reveal data-spot style={`--i:${i % 3}`}>
+            <span class="service-icon" aria-hidden="true"><i class={r.icon} /></span>
+            <h3 class="mt-6 font-display text-[24px] leading-tight font-semibold">{r.title}</h3>
+            <p class="mt-3 text-[16px] leading-relaxed text-[#a9b3c2]">{r.text}</p>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>

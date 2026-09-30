@@ -249,7 +249,7 @@ html.play-intro .intro {
 /* The header is fixed, so reserve its height inside the hero column */
 .header-spacer {
   flex-shrink: 0;
-  height: 64px;
+  height: 76px;
 }
 /* One glass bar holding brand, links and the call button */
 .header-bar {
@@ -257,8 +257,8 @@ html.play-intro .intro {
   display: flex;
   align-items: center;
   gap: clamp(12px, 2vw, 28px);
-  height: 64px;
-  padding: 0 8px 0 10px;
+  height: 76px;
+  padding: 0 10px 0 4px;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 20px;
   background: rgba(13, 21, 34, 0.55);
@@ -280,7 +280,7 @@ html.play-intro .intro {
   transition: opacity 0.45s;
 }
 .header.is-scrolled .header-bar {
-  height: 56px;
+  height: 64px;
   background: rgba(10, 17, 28, 0.88);
   border-color: rgba(200, 150, 62, 0.22);
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45);
@@ -308,8 +308,22 @@ html.play-intro .intro {
   box-shadow: 0 0 0 1px rgba(200, 150, 62, 0.45), 0 4px 14px rgba(0, 0, 0, 0.3);
   transition: transform 0.4s var(--ease);
 }
-.brand:hover .logo {
-  transform: rotate(-6deg) scale(1.05);
+.brand-logo {
+  display: block;
+  height: 70px;
+  width: auto;
+  transition: transform 0.4s var(--ease), height 0.45s var(--ease);
+}
+.brand:hover .brand-logo {
+  transform: translateY(-1px);
+}
+.header.is-scrolled .brand-logo {
+  height: 60px;
+}
+@media (max-width: 720px) {
+  .brand-logo {
+    height: 44px;
+  }
 }
 .logo img {
   width: 100%;
@@ -2690,6 +2704,132 @@ select.field {
 .calc-note i {
   margin-top: 2px;
   color: #c8963e;
+}
+
+.reason-card {
+  transition: transform 0.45s var(--ease), border-color 0.35s;
+}
+.reason-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200, 150, 62, 0.35);
+}
+.reason-card:hover .service-icon {
+  background: var(--accent);
+  color: #fff;
+  transform: rotate(-8deg) scale(1.08);
+}
+
+/* ---------- Free document checklist ---------- */
+
+.checklist-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.checklist-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #a8792c, #d4a550);
+  transition: width 0.5s var(--ease);
+}
+.checklist-progress.is-done .checklist-bar i {
+  background: linear-gradient(90deg, #2f8f55, #4cc27a);
+}
+.checklist-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.checklist-tab {
+  flex: 1 1 auto;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #a9b3c2;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.checklist-tab:hover {
+  color: #fff;
+}
+.checklist-tab.is-active {
+  background: rgba(200, 150, 62, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(200, 150, 62, 0.4);
+  color: #fff;
+}
+.checklist-list {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.checklist-list[hidden] {
+  display: none;
+}
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.checklist-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.checklist-item input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.checklist-box {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  color: transparent;
+  font-size: 12px;
+  transition: background 0.25s, border-color 0.25s, color 0.25s, transform 0.3s var(--ease);
+}
+.checklist-text {
+  color: #d3d9e2;
+  font-size: 15.5px;
+  line-height: 1.45;
+  transition: color 0.25s;
+}
+.checklist-item input:checked + .checklist-box {
+  border-color: #c8963e;
+  background: #c8963e;
+  color: #1a1206;
+  transform: scale(1.06);
+}
+.checklist-item input:checked ~ .checklist-text {
+  color: #8a96a8;
+  text-decoration: line-through;
+  text-decoration-color: rgba(200, 150, 62, 0.6);
+}
+.checklist-item input:focus-visible + .checklist-box {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 /* ---------- Viber fallback panel ---------- */

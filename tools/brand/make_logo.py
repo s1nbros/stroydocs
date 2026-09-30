@@ -81,12 +81,12 @@ def lockup(theme: str) -> str:
     m = mark(18, 16, 1.5, sheet=CREAM, ink=NAVY, ring=NAVY) if dark else mark(18, 16, 1.5, sheet=NAVY, ink=CREAM, ring="#ffffff")
     tx = 140
     stroy, w1 = text_path("serif.woff2", "Stroy", 62, tx, 70)
-    docs, w2 = text_path("serif.woff2", "docs", 62, tx + w1 - 1, 70)
+    docs, w2 = text_path("serif.woff2", "Docs", 62, tx + w1, 70)
     tagline, w3 = text_path("mono.woff2", "КСС · АКТОВЕ · ОФЕРТИ", 14, tx + 2, 108, tracking=0.12)
     width = round(tx + max(w1 + w2, w3) + 28)
     rule = f'<rect x="{tx + 2}" y="88" width="34" height="2" rx="1" fill="{BRASS}"/>'
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} 128" width="{width}" height="128">
-  <title>Stroydocs</title>
+  <title>StroyDocs</title>
   {bg}
   {m}
   <path d="{stroy}" fill="{word}"/>
@@ -100,7 +100,7 @@ def lockup(theme: str) -> str:
 def mark_svg(bg: bool) -> str:
     back = f'<rect width="64" height="64" rx="14" fill="{NAVY}"/>' if bg else ""
     inner = mark(6, 6, 52 / 64) if bg else mark()
-    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <title>Stroydocs</title>\n  {back}\n  {inner}\n</svg>\n'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <title>StroyDocs</title>\n  {back}\n  {inner}\n</svg>\n'
 
 
 files = {
@@ -117,7 +117,7 @@ for name, svg in files.items():
 def favicon_svg() -> str:
     """Simplified mark for 16–32 px: no windows or cab details, heavier strokes, bigger seal."""
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <title>Stroydocs</title>
+  <title>StroyDocs</title>
   <rect width="64" height="64" rx="14" fill="{NAVY}"/>
   <path d="M12 6h26l14 14v34a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4Z" fill="{CREAM}"/>
   <path d="M38 6v10a4 4 0 0 0 4 4h10Z" fill="{BRASS}"/>
