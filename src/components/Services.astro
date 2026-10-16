@@ -59,7 +59,7 @@ import Heading from "./Heading.astro";
       </div>
       {
         services.map((s, i) => (
-          <a href="#contact" class="service-row group" data-reveal data-spot data-svc={i} style={`--i:${i}`}>
+          <a href={s.href ?? "#contact"} class="service-row group" data-reveal data-spot data-svc={i} style={`--i:${i}`}>
             <span class="service-icon" aria-hidden="true"><i class={s.icon} /></span>
             <span>
               <span class="block text-[clamp(24px,2.6vw,32px)] font-semibold tracking-[-0.03em]">{s.title}</span>

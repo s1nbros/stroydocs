@@ -59,6 +59,7 @@ if (reduceMotion) {
     .to(".subhead.anim", { autoAlpha: 0.8, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9 }, 0.35)
     .to(".cta.anim", { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9 }, 0.5)
     .fromTo(".cta.anim", { boxShadow: "0 0 0 0 rgba(255,255,255,0.6)" }, { boxShadow: "0 0 0 14px rgba(255,255,255,0)", duration: 1.2, ease: "power2.out" }, 1)
+    .to(".hero-terms.anim", { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9 }, 0.6)
     .to(".stats .anim", { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8, stagger: 0.08 }, 0.6)
     .add(() => {
       $$(".stats [data-count]").forEach((el, i) =>
@@ -107,16 +108,18 @@ if (reduceMotion) {
 
   /* ---------- Document mockup + photo wipe ---------- */
 
-  ScrollTrigger.create({
-    trigger: "[data-doc]",
-    start: "top 70%",
-    once: true,
-    onEnter: (self) => {
-      const el = self.trigger as HTMLElement;
-      el.classList.add("is-in");
-      $$("[data-doc-count]", el).forEach((n, i) => countTo(n, Number(n.dataset.docCount), { duration: 0.9, delay: 2 + i * 0.15, format: money }));
-    },
-  });
+  // Only on pages that have the mockup
+  $$("[data-doc]").forEach((el) =>
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 70%",
+      once: true,
+      onEnter: () => {
+        el.classList.add("is-in");
+        $$("[data-doc-count]", el).forEach((n, i) => countTo(n, Number(n.dataset.docCount), { duration: 0.9, delay: 2 + i * 0.15, format: money }));
+      },
+    }),
+  );
   $$("[data-reveal-photo]").forEach((el) =>
     ScrollTrigger.create({ trigger: el, start: "top 80%", once: true, onEnter: () => el.classList.add("is-in") }),
   );
