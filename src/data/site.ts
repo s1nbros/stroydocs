@@ -36,8 +36,8 @@ export const heroStats = [
   { icon: "fa-solid fa-calculator", target: 40, suffix: "+", decimals: 0, label: "Изготвени КСС" },
 ];
 
-/** Minimum order (raised +50% after the market check, Sept 2026). Also the "от" prices in the services list. */
-export const pricingMin = { kss: 270, full: 525 };
+/** Minimum order (Oct 2026: КСС 70 €, everything else scaled by the same factor 70/270). Also the "от" prices in the services list. */
+export const pricingMin = { kss: 70, full: 136 };
 
 export const services = [
   {
@@ -62,7 +62,7 @@ export const services = [
     preview: "Папка обект",
     tag: "Месечен абонамент",
     text: "Цялата документация по обектите ви всеки месец — без да наемате служител.",
-    price: "от 525 € / мес.",
+    price: "от 136 € / мес.",
   },
   {
     title: "Обществени поръчки",
@@ -70,7 +70,7 @@ export const services = [
     preview: "Техническо предложение",
     tag: "Тръжни процедури",
     text: "Техническо предложение, КСС и пълният пакет документи за участие в търг.",
-    price: "от 600 €",
+    price: "от 156 €",
   },
 ];
 
@@ -86,11 +86,11 @@ export const steps = [
  * grows with the area and there is no jump at the band limits. A minimum per order applies.
  */
 export const pricingTiers = [
-  { label: "първите 150 м²", upTo: 150, kss: 2.5, full: 5.0 },
-  { label: "от 151 до 400 м²", upTo: 400, kss: 2.0, full: 4.2 },
-  { label: "от 401 до 800 м²", upTo: 800, kss: 1.6, full: 3.5 },
-  { label: "от 801 до 1500 м²", upTo: 1500, kss: 1.3, full: 2.9 },
-  { label: "над 1500 м²", upTo: Infinity, kss: 1.0, full: 2.3 },
+  { label: "първите 150 м²", upTo: 150, kss: 0.65, full: 1.3 },
+  { label: "от 151 до 400 м²", upTo: 400, kss: 0.52, full: 1.09 },
+  { label: "от 401 до 800 м²", upTo: 800, kss: 0.41, full: 0.91 },
+  { label: "от 801 до 1500 м²", upTo: 1500, kss: 0.34, full: 0.75 },
+  { label: "над 1500 м²", upTo: Infinity, kss: 0.26, full: 0.6 },
 ];
 
 /** Complexity coefficient by type of project (applied to the scale price). */
