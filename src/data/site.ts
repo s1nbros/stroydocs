@@ -9,9 +9,9 @@ export const site = {
   whatsappHref: "https://wa.me/359884782777",
   // TODO: create this mailbox on stroydocs.net (or replace with the address you use)
   email: "office@stroydocs.net",
-  title: "КСС за строеж, актове и оферти — изготвяне до 48 часа | StroyDocs",
+  title: "КСС, актове и оферти за строителни фирми — готови до 48 часа | StroyDocs",
   description:
-    "Изготвяне на КСС (количествено-стойностна сметка) за строеж, актове по Наредба №3 и оферти за обществени поръчки. Оферта в същия ден, готов документ до 2 работни дни. Цяла България.",
+    "Изготвяне на КСС, актове по Наредба №3, оферти и документи за обществени поръчки за строителни фирми в София. Изпращате файл — оферта до 2 часа, готов документ до 48 часа.",
 };
 
 /**
@@ -36,13 +36,12 @@ export const heroStats = [
   { icon: "fa-solid fa-calculator", target: 40, suffix: "+", decimals: 0, label: "Изготвени КСС" },
 ];
 
-/** Minimum order (Oct 2026: КСС 70 €, everything else scaled by the same factor 70/270). Also the "от" prices in the services list. */
-export const pricingMin = { kss: 70, full: 136 };
+/** Minimum order (raised +50% after the market check, Sept 2026). Also the "от" prices in the services list. */
+export const pricingMin = { kss: 270, full: 525 };
 
 export const services = [
   {
     title: "КСС и оферти",
-    href: "/kss-za-stroezh/",
     icon: "fa-solid fa-calculator",
     preview: "КСС",
     tag: "Количествено-стойностни сметки",
@@ -63,7 +62,7 @@ export const services = [
     preview: "Папка обект",
     tag: "Месечен абонамент",
     text: "Цялата документация по обектите ви всеки месец — без да наемате служител.",
-    price: "от 136 € / мес.",
+    price: "от 525 € / мес.",
   },
   {
     title: "Обществени поръчки",
@@ -71,7 +70,7 @@ export const services = [
     preview: "Техническо предложение",
     tag: "Тръжни процедури",
     text: "Техническо предложение, КСС и пълният пакет документи за участие в търг.",
-    price: "от 156 €",
+    price: "от 600 €",
   },
 ];
 
@@ -87,11 +86,11 @@ export const steps = [
  * grows with the area and there is no jump at the band limits. A minimum per order applies.
  */
 export const pricingTiers = [
-  { label: "първите 150 м²", upTo: 150, kss: 0.65, full: 1.3 },
-  { label: "от 151 до 400 м²", upTo: 400, kss: 0.52, full: 1.09 },
-  { label: "от 401 до 800 м²", upTo: 800, kss: 0.41, full: 0.91 },
-  { label: "от 801 до 1500 м²", upTo: 1500, kss: 0.34, full: 0.75 },
-  { label: "над 1500 м²", upTo: Infinity, kss: 0.26, full: 0.6 },
+  { label: "първите 150 м²", upTo: 150, kss: 2.5, full: 5.0 },
+  { label: "от 151 до 400 м²", upTo: 400, kss: 2.0, full: 4.2 },
+  { label: "от 401 до 800 м²", upTo: 800, kss: 1.6, full: 3.5 },
+  { label: "от 801 до 1500 м²", upTo: 1500, kss: 1.3, full: 2.9 },
+  { label: "над 1500 м²", upTo: Infinity, kss: 1.0, full: 2.3 },
 ];
 
 /** Complexity coefficient by type of project (applied to the scale price). */

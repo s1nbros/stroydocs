@@ -5,9 +5,6 @@ import actsBinder from "../assets/acts-binder.jpg";
 
 // Real project: КСС for the rough construction of a mixed-use complex in Mladost
 const q0 = quote(640);
-const maxRate = Math.max(...pricingTiers.map((t) => t.full));
-const r = (n: number) => n.toFixed(2).replace(".", ",");
-const [t1, t2, t3] = pricingTiers;
 const fmtEur = (n: number) => `${Math.round(n).toLocaleString("bg-BG")} €`;
 const fmtRate = (n: number) => `${n.toFixed(2).replace(".", ",")} €/м²`;
 const caseStats = [
@@ -95,19 +92,18 @@ import { LetterCascade } from "@/components/ui/letter-cascade";
               <span role="cell" class="price-area">{t.label}</span>
               <span role="cell">
                 <b>{t.kss.toFixed(2).replace(".", ",")} €/м²</b>
-                <i class="price-bar" style={`--w:${((t.kss / maxRate) * 100).toFixed(1)}%`} />
+                <i class="price-bar" style={`--w:${((t.kss / 5.0) * 100).toFixed(1)}%`} />
               </span>
               <span role="cell">
                 <b>{t.full.toFixed(2).replace(".", ",")} €/м²</b>
-                <i class="price-bar accent" style={`--w:${((t.full / maxRate) * 100).toFixed(1)}%`} />
+                <i class="price-bar accent" style={`--w:${((t.full / 5.0) * 100).toFixed(1)}%`} />
               </span>
             </div>
           ))
         }
         <div class="price-notes">
-          <p><b>Как се смята:</b> 640 м² = 150 м² × {r(t1.kss)} + 250 м² × {r(t2.kss)} + 240 м² × {r(t3.kss)} = {fmtEur(q0.kss)} за КСС.</p>
+          <p><b>Как се смята:</b> 640 м² = 150 м² × 2,50 + 250 м² × 2,00 + 240 м² × 1,60 = 1 259 € за КСС.</p>
           <p><b>Минимална поръчка:</b> {pricingMin.kss} € за КСС · {pricingMin.full} € за пълен пакет.</p>
-          <p><b>Плащане:</b> 50% авансово при възлагане, 50% при предаване на готовия документ.</p>
         </div>
       </div>
 
