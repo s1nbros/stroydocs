@@ -2,6 +2,14 @@
 import "../styles/global.css";
 import { site } from "../data/site";
 
+interface Props {
+  title?: string;
+  description?: string;
+  /** Extra JSON-LD objects for this page (Service, FAQPage, BreadcrumbList…) */
+  schema?: Record<string, unknown>[];
+}
+const { title = site.title, description = site.description, schema = [] } = Astro.props;
+
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL("/og-image.jpg", Astro.site);
 
@@ -46,8 +54,8 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>{site.title}</title>
-    <meta name="description" content={site.description} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#0d1522" />
     <script is:inline>
@@ -68,8 +76,8 @@ const jsonLd = {
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="bg_BG" />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:title" content={site.title} />
-    <meta property="og:description" content={site.description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
@@ -93,6 +101,7 @@ const jsonLd = {
     />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {schema.map((item) => <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", ...item })} />)}
   </head>
   <body>
     <a href="#main" class="skip-link">Към съдържанието</a>

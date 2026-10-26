@@ -7,9 +7,27 @@ import Process from "../components/Process.astro";
 import Proof from "../components/Proof.astro";
 import Contact from "../components/Contact.astro";
 import DocGallery from "../components/DocGallery.astro";
+import { faq, pricingMin } from "../data/site";
+
+// Structured data only (not visible): tells Google the site offers КСС for construction
+const schema = [
+  {
+    "@type": "Service",
+    name: "Изготвяне на КСС (количествено-стойностна сметка) за строеж",
+    serviceType: "Количествено-стойностна сметка",
+    url: new URL("/", Astro.site).toString(),
+    provider: { "@id": `${Astro.site}#business` },
+    areaServed: { "@type": "Country", name: "България" },
+    offers: { "@type": "Offer", priceCurrency: "EUR", price: pricingMin.kss },
+  },
+  {
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  },
+];
 ---
 
-<Layout>
+<Layout schema={schema}>
   <Hero />
   <main id="main" class="relative z-[1]">
     <Services />
